@@ -1493,6 +1493,885 @@ window.addEventListener('load', function() {
     }, 500);
 });
 
+// إضافة هيكل البيانات والواجهة للتعامل مع بطاقات متعددة
+
+// 1. أولاً: إضافة CSS للعناصر الجديدة
+function addMultiCardCSS() {
+    const style = document.createElement('style');
+    style.textContent = `
+        /* أسلوب قائمة البطاقات */
+        .cards-selector {
+            padding: 10px 15px;
+            margin: 0 15px 10px;
+            border-radius: 10px;
+            background-color: var(--white-color);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .cards-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .cards-header {
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .add-card-btn {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-card-btn:hover {
+            transform: scale(1.1);
+            background-color: var(--primary-color);
+        }
+        
+        .cards-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+            scrollbar-width: thin;
+        }
+        
+        .cards-list::-webkit-scrollbar {
+            height: 5px;
+        }
+        
+        .cards-list::-webkit-scrollbar-thumb {
+            background-color: var(--grey-color);
+            border-radius: 5px;
+        }
+        
+        .card-item {
+            min-width: 100px;
+            padding: 10px;
+            background-color: var(--light-color);
+            border-radius: 8px;
+            border: 2px solid transparent;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .card-item.active {
+            border-color: var(--secondary-color);
+            background-color: rgba(77, 166, 255, 0.1);
+        }
+        
+        .card-label {
+            font-size: 0.75rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 90px;
+        }
+        
+        .card-number-preview {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 3px;
+        }
+        
+        .delete-card {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .card-item:hover .delete-card {
+            opacity: 1;
+        }
+        
+        /* أسلوب نموذج إضافة بطاقة جديدة */
+        .new-card-form {
+            background-color: var(--white-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .new-card-form.active {
+            display: block;
+        }
+        
+        .form-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .btn-secondary {
+            background-color: var(--grey-color);
+            color: var(--dark-color);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// 2. إنشاء هيكل واجهة إدارة البطاقات المتعددة
+function createMultiCardUI() {
+    // إنشاء قسم اختيار البطاقات
+    const cardSelector = document.createElement('div');
+    cardSelector.className = 'cards-selector';
+    
+    const cardsTitleDiv = document.createElement('div');
+    cardsTitleDiv.className = 'cards-title';
+    
+    const cardsHeader = document.createElement('div');
+    cardsHeader.className = 'cards-header';
+    cardsHeader.textContent = 'بطاقاتي';
+    
+    const addCardBtn = document.createElement('button');
+    addCardBtn.className = 'add-card-btn';
+    addCardBtn.innerHTML = '<i class="fas fa-plus"></i>';
+    addCardBtn.title = 'إضافة بطاقة جديدة';
+    
+    cardsTitleDiv.appendChild(cardsHeader);
+    cardsTitleDiv.appendChild(addCardBtn);
+    
+    const cardsList = document.createElement('div');
+    cardsList.className = 'cards-list';
+    cardsList.id = 'cards-list';
+    
+    cardSelector.appendChild(cardsTitleDiv);
+    cardSelector.appendChild(cardsList);
+    
+    // إنشاء نموذج إضافة بطاقة جديدة
+    const newCardForm = document.createElement('div');
+    newCardForm.className = 'new-card-form';
+    newCardForm.id = 'new-card-form';
+    
+    newCardForm.innerHTML = `
+        <div class="form-title">إضافة بطاقة جديدة</div>
+        <div class="form-group">
+            <label for="card-name" class="form-label">اسم البطاقة</label>
+            <input type="text" id="card-name" class="form-control" placeholder="مثال: بطاقة الراتب">
+        </div>
+        <div class="form-group">
+            <label for="card-number" class="form-label">رقم البطاقة</label>
+            <input type="text" id="card-number" class="form-control" placeholder="**** **** **** ****" maxlength="19">
+        </div>
+        <div class="form-group">
+            <label for="initial-balance" class="form-label">الرصيد الأولي (د.ع)</label>
+            <input type="number" id="initial-balance" class="form-control" placeholder="أدخل الرصيد" min="0">
+        </div>
+        <div class="form-actions">
+            <button id="cancel-add-card" class="btn btn-secondary">إلغاء</button>
+            <button id="save-new-card" class="btn btn-success">حفظ البطاقة</button>
+        </div>
+    `;
+    
+    // إضافة العناصر إلى الصفحة
+    const homePage = document.getElementById('home-page');
+    const userSummary = document.querySelector('.user-summary');
+    
+    homePage.insertBefore(cardSelector, userSummary);
+    homePage.insertBefore(newCardForm, userSummary);
+    
+    return {
+        cardSelector,
+        addCardBtn,
+        cardsList,
+        newCardForm,
+        cancelBtn: document.getElementById('cancel-add-card'),
+        saveBtn: document.getElementById('save-new-card')
+    };
+}
+
+// 3. إنشاء وظائف التعامل مع البطاقات المتعددة
+function setupMultiCardFunctionality() {
+    // الحصول على مراجع للعناصر
+    const ui = createMultiCardUI();
+    const { addCardBtn, cardsList, newCardForm, cancelBtn, saveBtn } = ui;
+    
+    // متغير لتخزين معرف البطاقة النشطة
+    let activeCardId = null;
+    
+    // فتح نموذج إضافة بطاقة جديدة
+    addCardBtn.addEventListener('click', function() {
+        newCardForm.classList.add('active');
+        document.getElementById('card-name').focus();
+    });
+    
+    // إغلاق نموذج إضافة بطاقة جديدة
+    cancelBtn.addEventListener('click', function() {
+        newCardForm.classList.remove('active');
+        resetNewCardForm();
+    });
+    
+    // حفظ بطاقة جديدة
+    saveBtn.addEventListener('click', function() {
+        const cardName = document.getElementById('card-name').value.trim();
+        const cardNumber = document.getElementById('card-number').value.trim();
+        const initialBalance = document.getElementById('initial-balance').value.trim();
+        
+        if (!cardName || !cardNumber) {
+            showNotification('الرجاء ملء جميع الحقول المطلوبة');
+            return;
+        }
+        
+        // إضافة البطاقة الجديدة إلى Firebase
+        addNewCard(cardName, cardNumber, initialBalance);
+    });
+    
+    // إعادة تعيين نموذج البطاقة الجديدة
+    function resetNewCardForm() {
+        document.getElementById('card-name').value = '';
+        document.getElementById('card-number').value = '';
+        document.getElementById('initial-balance').value = '';
+        newCardForm.classList.remove('active');
+    }
+    
+    // إضافة بطاقة جديدة إلى Firebase
+    function addNewCard(cardName, cardNumber, initialBalance) {
+        showLoading(true);
+        
+        // إنشاء معرف فريد للبطاقة
+        const cardId = 'card_' + Date.now();
+        
+        // تنسيق رقم البطاقة
+        let formattedCardNumber = cardNumber.replace(/\s+/g, '');
+        if (formattedCardNumber.length > 4) {
+            const lastFour = formattedCardNumber.slice(-4);
+            formattedCardNumber = '**** **** **** ' + lastFour;
+        }
+        
+        // بيانات البطاقة الجديدة
+        const cardData = {
+            id: cardId,
+            name: cardName,
+            cardNumber: formattedCardNumber,
+            balance: Number(initialBalance) || 0,
+            lastUpdate: firebase.database.ServerValue.TIMESTAMP,
+            isBlocked: false
+        };
+        
+        // إضافة البطاقة إلى قاعدة البيانات
+        const userCardsRef = database.ref('userCards/' + currentUserId);
+        
+        userCardsRef.once('value')
+            .then((snapshot) => {
+                const updates = {};
+                updates[cardId] = cardData;
+                
+                return userCardsRef.update(updates);
+            })
+            .then(() => {
+                // إنشاء سجل فارغ للمعاملات لهذه البطاقة
+                return database.ref('cardTransactions/' + currentUserId + '/' + cardId).set({
+                    placeholder: {
+                        type: "system",
+                        amount: 0,
+                        date: firebase.database.ServerValue.TIMESTAMP,
+                        description: "تم إنشاء البطاقة"
+                    }
+                });
+            })
+            .then(() => {
+                showNotification('تم إضافة البطاقة بنجاح');
+                resetNewCardForm();
+                
+                // تنشيط البطاقة الجديدة
+                activeCardId = cardId;
+                loadCardData(cardId);
+            })
+            .catch((error) => {
+                console.error("خطأ في إضافة البطاقة:", error);
+                showNotification('حدث خطأ أثناء إضافة البطاقة');
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    }
+    
+    // تحميل بطاقات المستخدم من Firebase
+    function loadUserCards() {
+        showLoading(true);
+        
+        database.ref('userCards/' + currentUserId).once('value')
+            .then((snapshot) => {
+                const cardsData = snapshot.val() || {};
+                
+                // مسح قائمة البطاقات الحالية
+                cardsList.innerHTML = '';
+                
+                // التحقق مما إذا كان المستخدم لديه أي بطاقات
+                const cards = Object.values(cardsData);
+                
+                if (cards.length === 0) {
+                    // إذا لم تكن هناك بطاقات، أضف بطاقة افتراضية
+                    addDefaultCard();
+                    return;
+                }
+                
+                // عرض البطاقات الموجودة
+                cards.forEach((card) => {
+                    addCardToList(card);
+                });
+                
+                // تنشيط أول بطاقة افتراضياً
+                if (!activeCardId && cards.length > 0) {
+                    activeCardId = cards[0].id;
+                    selectCard(activeCardId);
+                } else if (activeCardId) {
+                    selectCard(activeCardId);
+                }
+            })
+            .catch((error) => {
+                console.error("خطأ في تحميل البطاقات:", error);
+                showNotification('حدث خطأ أثناء تحميل البطاقات');
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    }
+    
+    // إضافة بطاقة افتراضية للمستخدمين الجدد
+    function addDefaultCard() {
+        const defaultCardId = 'card_default';
+        const defaultCardData = {
+            id: defaultCardId,
+            name: "البطاقة الرئيسية",
+            cardNumber: "**** **** **** 5678",
+            balance: 1000000,
+            lastUpdate: firebase.database.ServerValue.TIMESTAMP,
+            isBlocked: false
+        };
+        
+        // إضافة البطاقة الافتراضية إلى قاعدة البيانات
+        database.ref('userCards/' + currentUserId + '/' + defaultCardId).set(defaultCardData)
+            .then(() => {
+                // إنشاء سجل فارغ للمعاملات
+                return database.ref('cardTransactions/' + currentUserId + '/' + defaultCardId).set({
+                    placeholder: {
+                        type: "system",
+                        amount: 0,
+                        date: firebase.database.ServerValue.TIMESTAMP,
+                        description: "تم إنشاء البطاقة"
+                    }
+                });
+            })
+            .then(() => {
+                // إضافة البطاقة إلى القائمة وتنشيطها
+                addCardToList(defaultCardData);
+                activeCardId = defaultCardId;
+                selectCard(defaultCardId);
+            })
+            .catch((error) => {
+                console.error("خطأ في إضافة البطاقة الافتراضية:", error);
+            });
+    }
+    
+    // إضافة بطاقة إلى واجهة قائمة البطاقات
+    function addCardToList(card) {
+        const cardItem = document.createElement('div');
+        cardItem.className = 'card-item';
+        cardItem.dataset.cardId = card.id;
+        
+        // تنسيق رقم البطاقة للعرض
+        const cardNumberShort = card.cardNumber.slice(-4);
+        
+        cardItem.innerHTML = `
+            <button class="delete-card" title="حذف البطاقة"><i class="fas fa-times"></i></button>
+            <div class="card-label">${card.name}</div>
+            <div class="card-number-preview">xxxx-${cardNumberShort}</div>
+        `;
+        
+        // تحديد البطاقة عند النقر عليها
+        cardItem.addEventListener('click', function(e) {
+            // تجاهل النقر على زر الحذف
+            if (e.target.closest('.delete-card')) {
+                return;
+            }
+            
+            const cardId = this.dataset.cardId;
+            activeCardId = cardId;
+            selectCard(cardId);
+        });
+        
+        // حذف البطاقة
+        const deleteBtn = cardItem.querySelector('.delete-card');
+        deleteBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const cardId = cardItem.dataset.cardId;
+            const cardName = cardItem.querySelector('.card-label').textContent;
+            
+            if (confirm(`هل أنت متأكد من حذف البطاقة "${cardName}"؟`)) {
+                deleteCard(cardId);
+            }
+        });
+        
+        cardsList.appendChild(cardItem);
+    }
+    
+    // تحديد بطاقة نشطة
+    function selectCard(cardId) {
+        // إزالة التنشيط من جميع البطاقات
+        const allCards = cardsList.querySelectorAll('.card-item');
+        allCards.forEach(card => card.classList.remove('active'));
+        
+        // تنشيط البطاقة المحددة
+        const selectedCard = cardsList.querySelector(`[data-card-id="${cardId}"]`);
+        if (selectedCard) {
+            selectedCard.classList.add('active');
+        }
+        
+        // تحميل بيانات البطاقة المحددة
+        loadCardData(cardId);
+    }
+    
+    // تحميل بيانات البطاقة المحددة
+    function loadCardData(cardId) {
+        showLoading(true);
+        
+        // تحديث المتغير العمومي للبطاقة النشطة
+        activeCardId = cardId;
+        
+        // تحميل بيانات البطاقة
+        database.ref('userCards/' + currentUserId + '/' + cardId).once('value')
+            .then((snapshot) => {
+                const cardData = snapshot.val();
+                if (cardData) {
+                    updateUIWithCardData(cardData);
+                    loadCardTransactions(cardId);
+                } else {
+                    showNotification('لم يتم العثور على بيانات البطاقة');
+                }
+            })
+            .catch((error) => {
+                console.error("خطأ في تحميل بيانات البطاقة:", error);
+                showNotification('حدث خطأ أثناء تحميل بيانات البطاقة');
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    }
+    
+    // تحديث واجهة المستخدم ببيانات البطاقة
+    function updateUIWithCardData(cardData) {
+        // تحديث رقم البطاقة
+        document.getElementById('card-number').textContent = cardData.cardNumber;
+        
+        // تحديث الرصيد
+        const formattedBalance = new Intl.NumberFormat('ar-IQ').format(cardData.balance);
+        document.getElementById('current-balance').textContent = formattedBalance;
+        
+        // تحديث تاريخ آخر تحديث
+        if (cardData.lastUpdate) {
+            const date = new Date(cardData.lastUpdate);
+            document.getElementById('last-update').textContent = `آخر تحديث: ${date.toLocaleString('ar-IQ')}`;
+        }
+        
+        // تحديث حالة البطاقة
+        if (cardData.isBlocked !== undefined) {
+            document.getElementById('block-card-toggle').checked = cardData.isBlocked;
+        }
+    }
+    
+    // تحميل معاملات البطاقة
+    function loadCardTransactions(cardId) {
+        database.ref('cardTransactions/' + currentUserId + '/' + cardId)
+            .orderByChild('date')
+            .limitToLast(10)
+            .once('value')
+            .then((snapshot) => {
+                const transactions = snapshot.val();
+                displayTransactions(transactions);
+            })
+            .catch((error) => {
+                console.error("خطأ في تحميل سجل المعاملات:", error);
+            });
+    }
+    
+    // حذف بطاقة
+    function deleteCard(cardId) {
+        showLoading(true);
+        
+        // منع حذف البطاقة الوحيدة
+        database.ref('userCards/' + currentUserId).once('value')
+            .then((snapshot) => {
+                const cardsData = snapshot.val() || {};
+                const cardsCount = Object.keys(cardsData).length;
+                
+                if (cardsCount <= 1) {
+                    showNotification('لا يمكن حذف البطاقة الوحيدة');
+                    throw new Error('لا يمكن حذف البطاقة الوحيدة');
+                }
+                
+                // حذف بيانات البطاقة
+                return database.ref('userCards/' + currentUserId + '/' + cardId).remove();
+            })
+            .then(() => {
+                // حذف معاملات البطاقة
+                return database.ref('cardTransactions/' + currentUserId + '/' + cardId).remove();
+            })
+            .then(() => {
+                showNotification('تم حذف البطاقة بنجاح');
+                
+                // إزالة البطاقة من القائمة
+                const cardElement = cardsList.querySelector(`[data-card-id="${cardId}"]`);
+                if (cardElement) {
+                    cardElement.remove();
+                }
+                
+                // إذا كانت البطاقة المحذوفة هي النشطة، حدد بطاقة أخرى
+                if (activeCardId === cardId) {
+                    const firstCard = cardsList.querySelector('.card-item');
+                    if (firstCard) {
+                        activeCardId = firstCard.dataset.cardId;
+                        selectCard(activeCardId);
+                    }
+                }
+            })
+            .catch((error) => {
+                if (error.message !== 'لا يمكن حذف البطاقة الوحيدة') {
+                    console.error("خطأ في حذف البطاقة:", error);
+                    showNotification('حدث خطأ أثناء حذف البطاقة');
+                }
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    }
+    
+    // تحديث دوال المعاملات لتعمل مع البطاقة المحددة
+    
+    // تحديث دالة الإيداع
+    window.originalDepositAmount = window.depositAmount;
+    window.depositAmount = function(amount) {
+        if (!activeCardId) {
+            showNotification('يرجى تحديد بطاقة أولاً');
+            return Promise.reject('لم يتم تحديد بطاقة');
+        }
+        
+        if (!amount || isNaN(amount) || amount <= 0) {
+            showNotification('المبلغ غير صحيح');
+            return Promise.reject('المبلغ غير صحيح');
+        }
+        
+        showLoading(true);
+        
+        return database.ref('userCards/' + currentUserId + '/' + activeCardId).once('value')
+            .then((snapshot) => {
+                const cardData = snapshot.val();
+                if (cardData) {
+                    const currentBalance = cardData.balance || 0;
+                    const newBalance = currentBalance + Number(amount);
+                    
+                    // تحديث الرصيد والتاريخ
+                    return database.ref('userCards/' + currentUserId + '/' + activeCardId).update({
+                        balance: newBalance,
+                        lastUpdate: firebase.database.ServerValue.TIMESTAMP
+                    });
+                } else {
+                    throw new Error('لم يتم العثور على بيانات البطاقة');
+                }
+            })
+            .then(() => {
+                // إضافة سجل المعاملة
+                return database.ref('cardTransactions/' + currentUserId + '/' + activeCardId).push({
+                    type: 'deposit',
+                    amount: Number(amount),
+                    date: firebase.database.ServerValue.TIMESTAMP
+                });
+            })
+            .then(() => {
+                showNotification('تم إضافة المبلغ بنجاح');
+                return true;
+            })
+            .catch((error) => {
+                console.error("خطأ في إضافة المبلغ:", error);
+                showNotification('حدث خطأ أثناء إضافة المبلغ');
+                return false;
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    };
+    
+    // تحديث دالة السحب
+    window.originalWithdrawAmount = window.withdrawAmount;
+    window.withdrawAmount = function(amount) {
+        if (!activeCardId) {
+            showNotification('يرجى تحديد بطاقة أولاً');
+            return Promise.reject('لم يتم تحديد بطاقة');
+        }
+        
+        if (!amount || isNaN(amount) || amount <= 0) {
+            showNotification('المبلغ غير صحيح');
+            return Promise.reject('المبلغ غير صحيح');
+        }
+        
+        showLoading(true);
+        
+        return database.ref('userCards/' + currentUserId + '/' + activeCardId).once('value')
+            .then((snapshot) => {
+                const cardData = snapshot.val();
+                if (cardData) {
+                    const currentBalance = cardData.balance || 0;
+                    if (currentBalance < amount) {
+                        throw new Error('الرصيد غير كافٍ');
+                    }
+                    
+                    const newBalance = currentBalance - Number(amount);
+                    
+                    // تحديث الرصيد والتاريخ
+                    return database.ref('userCards/' + currentUserId + '/' + activeCardId).update({
+                        balance: newBalance,
+                        lastUpdate: firebase.database.ServerValue.TIMESTAMP
+                    });
+                } else {
+                    throw new Error('لم يتم العثور على بيانات البطاقة');
+                }
+            })
+            .then(() => {
+                // إضافة سجل المعاملة
+                return database.ref('cardTransactions/' + currentUserId + '/' + activeCardId).push({
+                    type: 'withdraw',
+                    amount: Number(amount),
+                    date: firebase.database.ServerValue.TIMESTAMP
+                });
+            })
+            .then(() => {
+                showNotification('تم سحب المبلغ بنجاح');
+                return true;
+            })
+            .catch((error) => {
+                console.error("خطأ في سحب المبلغ:", error);
+                if (error.message === 'الرصيد غير كافٍ') {
+                    showNotification('عذراً، الرصيد غير كافٍ');
+                } else {
+                    showNotification('حدث خطأ أثناء سحب المبلغ');
+                }
+                return false;
+            })
+            .finally(() => {
+                showLoading(false);
+            });
+    };
+    
+    // تحديث دالة تحديث حالة البطاقة
+    window.originalUpdateCardStatus = window.updateCardStatus;
+    window.updateCardStatus = function(isBlocked) {
+        if (!activeCardId) {
+            showNotification('يرجى تحديد بطاقة أولاً');
+            return Promise.reject('لم يتم تحديد بطاقة');
+        }
+        
+        showLoading(true);
+        
+        return database.ref('userCards/' + currentUserId + '/' + activeCardId).update({
+            isBlocked: isBlocked,
+            lastUpdate: firebase.database.ServerValue.TIMESTAMP
+        })
+        .then(() => {
+            // إضافة سجل للعملية
+            return database.ref('cardTransactions/' + currentUserId + '/' + activeCardId).push({
+                type: 'system',
+                amount: 0,
+                date: firebase.database.ServerValue.TIMESTAMP,
+                description: isBlocked ? 'تم حظر البطاقة' : 'تم تفعيل البطاقة'
+            });
+        })
+        .then(() => {
+            showNotification(isBlocked ? 'تم حظر البطاقة بنجاح' : 'تم تفعيل البطاقة بنجاح');
+            return true;
+        })
+        .catch((error) => {
+            console.error("خطأ في تحديث حالة البطاقة:", error);
+            showNotification('حدث خطأ أثناء تحديث حالة البطاقة');
+            return false;
+        })
+        .finally(() => {
+            showLoading(false);
+        });
+    };
+    
+    // تحميل البطاقات عند بدء التطبيق
+    loadUserCards();
+    
+    // تحديث API التطبيق
+    window.cardManagerApp = {
+        ...window.cardManagerApp,
+        getActiveCardId: function() {
+          return activeCardId;
+        },
+        getAllCards: function() {
+            return database.ref('userCards/' + currentUserId).once('value')
+                .then(snapshot => snapshot.val() || {});
+        },
+        switchCard: function(cardId) {
+            activeCardId = cardId;
+            return loadCardData(cardId);
+        },
+        addCard: function(cardName, cardNumber, initialBalance) {
+            return addNewCard(cardName, cardNumber, initialBalance);
+        },
+        deleteCard: function(cardId) {
+            return deleteCard(cardId);
+        },
+        getCardTransactions: function(cardId) {
+            const targetCardId = cardId || activeCardId;
+            return database.ref('cardTransactions/' + currentUserId + '/' + targetCardId).once('value')
+                .then(snapshot => snapshot.val() || {});
+        }
+    };
+    
+    // إعادة تعريف دالة تحميل بيانات المستخدم لتحميل البطاقات
+    window.originalLoadUserData = window.loadUserData;
+    window.loadUserData = function(userId) {
+        loadUserCards();
+    };
+    
+    return {
+        loadUserCards,
+        addNewCard,
+        selectCard,
+        loadCardData,
+        deleteCard,
+        getActiveCardId: () => activeCardId
+    };
+}
+
+// 4. تعديل هيكل بيانات Firebase
+function updateFirebaseStructure() {
+    // تحويل البيانات من النمط القديم إلى النمط الجديد إذا لزم الأمر
+    database.ref('users/' + currentUserId).once('value')
+        .then((snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+                // التحقق من وجود بطاقات مسجلة للمستخدم
+                return database.ref('userCards/' + currentUserId).once('value');
+            }
+            return null;
+        })
+        .then((cardsSnapshot) => {
+            if (cardsSnapshot && !cardsSnapshot.exists()) {
+                // نقل البيانات من "users/{userId}" إلى "userCards/{userId}/card_default"
+                return database.ref('users/' + currentUserId).once('value')
+                    .then((snapshot) => {
+                        const userData = snapshot.val();
+                        if (userData) {
+                            const defaultCardId = 'card_default';
+                            const defaultCardData = {
+                                id: defaultCardId,
+                                name: "البطاقة الرئيسية",
+                                cardNumber: userData.cardNumber || "**** **** **** 5678",
+                                balance: userData.balance || 0,
+                                lastUpdate: userData.lastUpdate || firebase.database.ServerValue.TIMESTAMP,
+                                isBlocked: userData.isBlocked || false
+                            };
+                            
+                            // إضافة البطاقة الافتراضية
+                            return database.ref('userCards/' + currentUserId + '/' + defaultCardId).set(defaultCardData);
+                        }
+                    })
+                    .then(() => {
+                        // نقل المعاملات من "transactions/{userId}" إلى "cardTransactions/{userId}/card_default"
+                        return database.ref('transactions/' + currentUserId).once('value');
+                    })
+                    .then((transactionsSnapshot) => {
+                        if (transactionsSnapshot.exists()) {
+                            const transactions = transactionsSnapshot.val();
+                            return database.ref('cardTransactions/' + currentUserId + '/card_default').set(transactions);
+                        }
+                    });
+            }
+        })
+        .catch((error) => {
+            console.error("خطأ في تحديث هيكل البيانات:", error);
+        });
+}
+
+// 5. تنسيق رقم البطاقة أثناء الكتابة
+function setupCardNumberFormatting() {
+    const cardNumberInput = document.getElementById('card-number');
+    if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // إزالة جميع الأحرف غير الرقمية
+            
+            // وضع مسافة بعد كل 4 أرقام
+            if (value.length > 0) {
+                value = value.match(new RegExp('.{1,4}', 'g')).join(' ');
+            }
+            
+            // تحديث القيمة
+            e.target.value = value;
+        });
+    }
+}
+
+// 6. دالة لتهيئة نظام إدارة البطاقات المتعددة
+function initMultiCardSystem() {
+    // إضافة CSS للعناصر الجديدة
+    addMultiCardCSS();
+    
+    // تحديث هيكل قاعدة البيانات
+    updateFirebaseStructure();
+    
+    // إعداد وظائف إدارة البطاقات المتعددة
+    const multiCardSystem = setupMultiCardFunctionality();
+    
+    // إعداد تنسيق رقم البطاقة
+    setupCardNumberFormatting();
+    
+    return multiCardSystem;
+}
+
+// 7. تشغيل نظام إدارة البطاقات المتعددة عند تحميل الصفحة
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        try {
+            window.multiCardSystem = initMultiCardSystem();
+            console.log('تم تهيئة نظام إدارة البطاقات المتعددة بنجاح');
+        } catch (error) {
+            console.error('خطأ في تهيئة نظام إدارة البطاقات المتعددة:', error);
+        }
+    }, 500);
+});
+
+
+
     </script>
 </body>
 </html>
