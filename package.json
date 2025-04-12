@@ -1,0 +1,62 @@
+{
+  "name": "cashier-system-desktop",
+  "version": "1.0.0",
+  "description": "نظام كاشير متكامل مع إدارة المبيعات والمخزون والأقساط",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [
+    "cashier",
+    "POS",
+    "retail",
+    "inventory",
+    "installments",
+    "arabic",
+    "desktop",
+    "electron"
+  ],
+  "author": "يعقوب",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^20.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.yaqoob.cashiersystem",
+    "productName": "نظام الكاشير المتكامل",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/assets/icons/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "src/assets/icons/icon.png",
+      "category": "Office"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "src/assets/icons/icon.png"
+    }
+  },
+  "icon": "src/assets/icons/icon.png)"
+}

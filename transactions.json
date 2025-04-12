@@ -1,0 +1,178 @@
+{
+    "sales": [
+      {
+        "id": "sale1",
+        "number": "INV-240411-0001",
+        "date": "2025-04-11T09:30:00",
+        "timestamp": "2025-04-11T09:30:00",
+        "items": [
+          {
+            "productId": "prod1",
+            "code": "P0001",
+            "name": "تلفاز سمارت 55 بوصة",
+            "price": 450000,
+            "quantity": 1,
+            "total": 450000
+          }
+        ],
+        "subtotal": 450000,
+        "discount": 0,
+        "total": 450000,
+        "paymentMethod": "cash",
+        "paidAmount": 450000,
+        "change": 0
+      },
+      {
+        "id": "sale2",
+        "number": "INV-240411-0002",
+        "date": "2025-04-11T11:15:00",
+        "timestamp": "2025-04-11T11:15:00",
+        "items": [
+          {
+            "productId": "prod5",
+            "code": "P0005",
+            "name": "أرز بسمتي 5 كغم",
+            "price": 12000,
+            "quantity": 2,
+            "total": 24000
+          },
+          {
+            "productId": "prod6",
+            "code": "P0006",
+            "name": "زيت نباتي 1.8 لتر",
+            "price": 8500,
+            "quantity": 3,
+            "total": 25500
+          }
+        ],
+        "subtotal": 49500,
+        "discount": 2500,
+        "total": 47000,
+        "paymentMethod": "cash",
+        "paidAmount": 50000,
+        "change": 3000
+      },
+      {
+        "id": "sale3",
+        "number": "INV-240411-0003",
+        "date": "2025-04-11T14:45:00",
+        "timestamp": "2025-04-11T14:45:00",
+        "items": [
+          {
+            "productId": "prod2",
+            "code": "P0002",
+            "name": "غسالة أوتوماتيك 8 كغم",
+            "price": 320000,
+            "quantity": 1,
+            "total": 320000
+          }
+        ],
+        "subtotal": 320000,
+        "discount": 20000,
+        "total": 300000,
+        "paymentMethod": "installment",
+        "customer": {
+          "name": "محمد أحمد",
+          "phone": "07712345678",
+          "address": "بغداد - الكرادة"
+        },
+        "installmentDetails": {
+          "totalWithInterest": 312000,
+          "downPayment": 100000,
+          "remainingAmount": 212000,
+          "installmentPeriod": 6,
+          "monthlyInstallment": 35333.33,
+          "interestRate": 4
+        }
+      }
+    ],
+    "installmentContracts": [
+      {
+        "id": "contract1",
+        "saleId": "sale3",
+        "invoiceNumber": "INV-240411-0003",
+        "contractNumber": "INST-240411-0003",
+        "customerName": "محمد أحمد",
+        "customerPhone": "07712345678",
+        "customerAddress": "بغداد - الكرادة",
+        "totalAmount": 312000,
+        "downPayment": 100000,
+        "remainingAmount": 212000,
+        "originalPeriod": 6,
+        "remainingPeriod": 6,
+        "monthlyAmount": 35333.33,
+        "interestRate": 4,
+        "startDate": "2025-04-11T14:45:00",
+        "nextPaymentDate": "2025-05-11T14:45:00",
+        "paymentHistory": [
+          {
+            "amount": 100000,
+            "date": "2025-04-11T14:45:00",
+            "notes": "الدفعة الأولى"
+          }
+        ],
+        "status": "active"
+      }
+    ],
+    "transactions": [
+      {
+        "id": "trans1",
+        "timestamp": "2025-04-11T09:00:00",
+        "actionType": "إضافة منتج",
+        "details": {
+          "productId": "prod1",
+          "productName": "تلفاز سمارت 55 بوصة",
+          "productCode": "P0001"
+        },
+        "user": "admin"
+      },
+      {
+        "id": "trans2",
+        "timestamp": "2025-04-11T09:05:00",
+        "actionType": "إضافة منتج",
+        "details": {
+          "productId": "prod2",
+          "productName": "غسالة أوتوماتيك 8 كغم",
+          "productCode": "P0002"
+        },
+        "user": "admin"
+      },
+      {
+        "id": "trans3",
+        "timestamp": "2025-04-11T09:30:00",
+        "actionType": "بيع نقدي",
+        "details": {
+          "invoiceId": "sale1",
+          "invoiceNumber": "INV-240411-0001",
+          "total": 450000,
+          "paymentMethod": "cash"
+        },
+        "user": "admin"
+      },
+      {
+        "id": "trans4",
+        "timestamp": "2025-04-11T11:15:00",
+        "actionType": "بيع نقدي",
+        "details": {
+          "invoiceId": "sale2",
+          "invoiceNumber": "INV-240411-0002",
+          "total": 47000,
+          "paymentMethod": "cash"
+        },
+        "user": "admin"
+      },
+      {
+        "id": "trans5",
+        "timestamp": "2025-04-11T14:45:00",
+        "actionType": "بيع بالتقسيط",
+        "details": {
+          "invoiceId": "sale3",
+          "invoiceNumber": "INV-240411-0003",
+          "total": 300000,
+          "paymentMethod": "installment",
+          "customerName": "محمد أحمد"
+        },
+        "user": "admin"
+      }
+    ]
+  }
