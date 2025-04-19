@@ -73,10 +73,10 @@
                 <div id="register-tab" class="auth-tab-content">
                     <form id="register-form">
                         <div class="form-group">
-                            <label for="register-investor-id">معرف المستثمر</label>
+                            <label for="register-investor-id">معرف المستثمر (اختياري)</label>
                             <div class="input-group">
                                 <i class="fas fa-id-card"></i>
-                                <input type="text" id="register-investor-id" required>
+                                <input type="text" id="register-investor-id">
                             </div>
                             <small class="form-hint">أدخل معرف المستثمر الخاص بك من نظام الاستثمار المتكامل</small>
                         </div>
@@ -202,134 +202,136 @@
                     <p>مرحباً بك في محفظتك الشخصية</p>
                 </div>
                 
-                <!-- Card Section -->
-                <div class="investment-card-container">
-                    <div class="investment-card animate__animated animate__fadeInUp">
-                        <div class="card-bg"></div>
-                        <div class="card-logo">
-                            <img src="assets/card-logo.png" alt="محفظتي">
-                            <span>محفظتي</span>
+                <!-- النموذج الإضافي لربط معرف المستثمر -->
+                <div id="link-investor-section" class="investment-card-container" style="display: none;">
+                    <div class="card animate__animated animate__fadeInUp">
+                        <div class="card-header">
+                            <h3><i class="fas fa-link"></i> ربط حساب المستثمر</h3>
                         </div>
-                        <div class="card-balance">
-                            <span class="balance-label">الرصيد المتاح</span>
-                            <h2 id="total-balance">00,000,000</h2>
-                            <span class="currency">دينار</span>
-                        </div>
-                        <div class="card-profits">
-                            <div class="profit-item">
-                                <span class="profit-label">الربح اليومي</span>
-                                <span class="profit-value" id="daily-profit">000,000</span>
-                            </div>
-                            <div class="profit-item">
-                                <span class="profit-label">الربح الشهري</span>
-                                <span class="profit-value" id="monthly-profit">0,000,000</span>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <span id="investor-name">اسم المستثمر</span>
-                            <span id="card-validity">صالحة لغاية: 12/28</span>
+                        <div class="card-body">
+                            <p>يبدو أنك لم تقم بربط حسابك بمعرف المستثمر بعد. يرجى إدخال معرف المستثمر الخاص بك لربطه بحسابك:</p>
+                            <form id="link-investor-form">
+                                <div class="form-group">
+                                    <label for="investor-id-input">معرف المستثمر</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-id-card"></i>
+                                        <input type="text" id="investor-id-input" placeholder="أدخل معرف المستثمر" required>
+                                    </div>
+                                    <small class="form-hint">يمكنك الحصول على معرف المستثمر من مدير النظام أو من التقارير المرسلة إليك</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary">ربط الحساب</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <!-- Quick Actions -->
-                <div class="quick-actions">
-                    <button class="action-button withdraw" id="quick-withdraw">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>طلب سحب</span>
-                    </button>
-                    <button class="action-button deposit" id="track-deposit">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <span>متابعة إيداع</span>
-                    </button>
-                    <button class="action-button profits" id="view-profits">
-                        <i class="fas fa-chart-line"></i>
-                        <span>عرض الأرباح</span>
-                    </button>
-                    <button class="action-button history" id="view-history">
-                        <i class="fas fa-history"></i>
-                        <span>سجل المعاملات</span>
-                    </button>
-                </div>
-
-                <!-- Summary Section -->
-                <div class="dashboard-summary">
-                    <div class="summary-item animate__animated animate__fadeIn">
-                        <div class="summary-icon green">
+                
+                <!-- بطاقات الإحصائيات -->
+                <div class="stats-card-container">
+                    <div class="card stats-card animate__animated animate__fadeInUp">
+                        <div class="stats-card-icon blue">
                             <i class="fas fa-wallet"></i>
                         </div>
-                        <div class="summary-details">
+                        <div class="stats-card-content">
                             <h3>إجمالي الاستثمار</h3>
-                            <p id="total-investment">000,000,000 دينار</p>
+                            <h2 id="total-investment">0 دينار</h2>
+                            <div class="stats-card-detail" id="investment-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>0%</span>
+                                <span>هذا الشهر</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="summary-item animate__animated animate__fadeIn animate__delay-1s">
-                        <div class="summary-icon blue">
-                            <i class="fas fa-percentage"></i>
-                        </div>
-                        <div class="summary-details">
-                            <h3>نسبة العائد</h3>
-                            <p id="interest-rate">17.5%</p>
-                        </div>
-                    </div>
-                    <div class="summary-item animate__animated animate__fadeIn animate__delay-2s">
-                        <div class="summary-icon purple">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="summary-details">
-                            <h3>مدة الاستثمار</h3>
-                            <p id="investment-duration">365 يوم</p>
-                        </div>
-                    </div>
-                    <div class="summary-item animate__animated animate__fadeIn animate__delay-3s">
-                        <div class="summary-icon orange">
+                    <div class="card stats-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <div class="stats-card-icon green">
                             <i class="fas fa-coins"></i>
                         </div>
-                        <div class="summary-details">
-                            <h3>تاريخ الاستحقاق</h3>
-                            <p id="next-profit-date">01/01/2025</p>
+                        <div class="stats-card-content">
+                            <h3>إجمالي الأرباح</h3>
+                            <h2 id="total-profit">0 دينار</h2>
+                            <div class="stats-card-detail" id="profit-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>0%</span>
+                                <span>هذا الشهر</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stats-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <div class="stats-card-icon purple">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stats-card-content">
+                            <h3>أرباح شهرية</h3>
+                            <h2 id="monthly-profit">0 دينار</h2>
+                            <div class="stats-card-detail" id="monthly-profit-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>0%</span>
+                                <span>عن الشهر السابق</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Charts Section -->
-                <div class="dashboard-charts">
-                    <div class="chart-container animate__animated animate__fadeInUp">
-                        <div class="chart-header">
-                            <h3>تطور الاستثمار</h3>
-                            <div class="chart-period">
-                                <button class="period-btn active" data-period="month">شهر</button>
-                                <button class="period-btn" data-period="quarter">ربع سنة</button>
-                                <button class="period-btn" data-period="year">سنة</button>
+                
+                <!-- الرسم البياني للأرباح -->
+                <div class="charts-container">
+                    <div class="card chart-card animate__animated animate__fadeInUp">
+                        <div class="card-header">
+                            <h3>تطور الأرباح الشهرية</h3>
+                            <div class="chart-options">
+                                <select id="profit-chart-period">
+                                    <option value="6">آخر 6 أشهر</option>
+                                    <option value="12" selected>آخر 12 شهر</option>
+                                    <option value="24">آخر 24 شهر</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="chart-body">
-                            <canvas id="investment-chart"></canvas>
-                        </div>
-                    </div>
-                    <div class="chart-container animate__animated animate__fadeInUp">
-                        <div class="chart-header">
-                            <h3>الأرباح التراكمية</h3>
-                            <div class="chart-period">
-                                <button class="period-btn active" data-period="month">شهر</button>
-                                <button class="period-btn" data-period="quarter">ربع سنة</button>
-                                <button class="period-btn" data-period="year">سنة</button>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="profit-chart"></canvas>
                             </div>
-                        </div>
-                        <div class="chart-body">
-                            <canvas id="profits-chart"></canvas>
                         </div>
                     </div>
                 </div>
-
-                <!-- Recent Transactions -->
-                <div class="recent-transactions animate__animated animate__fadeInUp">
-                    <div class="section-header">
-                        <h3>آخر المعاملات</h3>
-                        <a href="#transactions" class="view-all" data-page="transactions">عرض الكل <i class="fas fa-arrow-left"></i></a>
+                
+                <!-- أحدث المعاملات -->
+                <div class="card recent-transactions-card animate__animated animate__fadeInUp">
+                    <div class="card-header">
+                        <h3>أحدث المعاملات</h3>
+                        <a href="#transactions" data-page="transactions" class="btn btn-link">عرض الكل</a>
                     </div>
-                    <div class="transactions-list" id="recent-transactions-list">
-                        <!-- Transactions will be populated here -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>النوع</th>
+                                        <th>الوصف</th>
+                                        <th>المبلغ</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-transactions-table">
+                                    <tr class="placeholder-row">
+                                        <td colspan="5" class="text-center">جاري تحميل المعاملات...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الاستثمارات الحالية -->
+                <div class="investment-card-container">
+                    <div class="card animate__animated animate__fadeInUp">
+                        <div class="card-header">
+                            <h3>استثماراتي</h3>
+                        </div>
+                        <div class="card-body" id="investments-container">
+                            <div class="placeholder-message">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>جاري تحميل الاستثمارات...</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -337,156 +339,211 @@
             <!-- Transactions Page -->
             <section id="transactions-page" class="page">
                 <div class="page-header">
-                    <h2>سجل المعاملات</h2>
-                    <p>استعرض جميع عمليات الإيداع والسحب والأرباح</p>
+                    <h2>المعاملات</h2>
+                    <p>سجل كامل لمعاملاتك المالية</p>
                 </div>
 
-                <div class="transactions-filters">
+                <div class="filter-bar">
                     <div class="filter-group">
-                        <button class="filter-btn active" data-filter="all">جميع المعاملات</button>
-                        <button class="filter-btn" data-filter="deposit">الإيداعات</button>
-                        <button class="filter-btn" data-filter="withdraw">السحوبات</button>
-                        <button class="filter-btn" data-filter="profit">الأرباح</button>
+                        <label for="transaction-type-filter">نوع المعاملة</label>
+                        <select id="transaction-type-filter">
+                            <option value="all">الكل</option>
+                            <option value="deposit">إيداع</option>
+                            <option value="withdraw">سحب</option>
+                            <option value="profit">ربح</option>
+                            <option value="transfer">تحويل</option>
+                        </select>
                     </div>
-                    <div class="search-box">
-                        <input type="text" placeholder="بحث في المعاملات...">
-                        <i class="fas fa-search"></i>
+                    <div class="filter-group">
+                        <label for="transaction-date-filter">الفترة</label>
+                        <select id="transaction-date-filter">
+                            <option value="all">الكل</option>
+                            <option value="month">هذا الشهر</option>
+                            <option value="quarter">هذا الربع</option>
+                            <option value="year">هذه السنة</option>
+                        </select>
+                    </div>
+                    <div class="filter-actions">
+                        <button id="export-transactions" class="btn btn-outline">
+                            <i class="fas fa-file-export"></i>
+                            <span>تصدير</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="transactions-table-container">
-                    <table class="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>رقم العملية</th>
-                                <th>التاريخ</th>
-                                <th>النوع</th>
-                                <th>المبلغ</th>
-                                <th>الرصيد بعد العملية</th>
-                                <th>الحالة</th>
-                                <th>التفاصيل</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactions-table-body">
-                            <!-- Transactions will be populated here -->
-                        </tbody>
-                    </table>
-                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>رقم المرجع</th>
+                                        <th>النوع</th>
+                                        <th>الوصف</th>
+                                        <th>المبلغ</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactions-table">
+                                    <tr class="placeholder-row">
+                                        <td colspan="7" class="text-center">جاري تحميل المعاملات...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div class="pagination">
-                    <button class="pagination-btn" id="prev-page">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                    <div class="pagination-numbers" id="pagination-numbers">
-                        <span class="page-number active">1</span>
-                        <span class="page-number">2</span>
-                        <span class="page-number">3</span>
+                        <div class="pagination-container">
+                            <div class="pagination-info">
+                                <span>عرض <span id="current-showing">0</span> من <span id="total-records">0</span> معاملة</span>
+                            </div>
+                            <div class="pagination">
+                                <button id="prev-page" class="btn btn-sm" disabled>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                                <div id="pagination-numbers">
+                                    <button class="btn btn-sm active">1</button>
+                                </div>
+                                <button id="next-page" class="btn btn-sm" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <button class="pagination-btn" id="next-page">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
                 </div>
             </section>
 
             <!-- Profits Page -->
             <section id="profits-page" class="page">
                 <div class="page-header">
-                    <h2>الأرباح والعوائد</h2>
-                    <p>متابعة تفاصيل الأرباح اليومية والشهرية</p>
+                    <h2>الأرباح</h2>
+                    <p>تفاصيل وتقارير الأرباح من استثماراتك</p>
                 </div>
 
-                <!-- Profit Summary Cards -->
-                <div class="profit-summary">
-                    <div class="profit-card blue">
-                        <div class="profit-card-icon">
-                            <i class="fas fa-calendar-day"></i>
+                <!-- بطاقات ملخص الأرباح -->
+                <div class="stats-card-container">
+                    <div class="card stats-card animate__animated animate__fadeInUp">
+                        <div class="stats-card-icon green">
+                            <i class="fas fa-coins"></i>
                         </div>
-                        <div class="profit-card-details">
-                            <h3>الربح اليومي</h3>
-                            <p id="daily-profit-details">000,000 دينار</p>
-                        </div>
-                        <div class="profit-percentage">
-                            <span>0.06% / يوم</span>
-                        </div>
-                    </div>
-                    <div class="profit-card green">
-                        <div class="profit-card-icon">
-                            <i class="fas fa-calendar-week"></i>
-                        </div>
-                        <div class="profit-card-details">
-                            <h3>الربح الأسبوعي</h3>
-                            <p id="weekly-profit-details">0,000,000 دينار</p>
-                        </div>
-                        <div class="profit-percentage">
-                            <span>0.4% / أسبوع</span>
-                        </div>
-                    </div>
-                    <div class="profit-card purple">
-                        <div class="profit-card-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="profit-card-details">
-                            <h3>الربح الشهري</h3>
-                            <p id="monthly-profit-details">0,000,000 دينار</p>
-                        </div>
-                        <div class="profit-percentage">
-                            <span>1.75% / شهر</span>
-                        </div>
-                    </div>
-                    <div class="profit-card orange">
-                        <div class="profit-card-icon">
-                            <i class="fas fa-calendar"></i>
-                        </div>
-                        <div class="profit-card-details">
-                            <h3>الربح المتوقع سنوياً</h3>
-                            <p id="yearly-profit-projection">00,000,000 دينار</p>
-                        </div>
-                        <div class="profit-percentage">
-                            <span>21% / سنة</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profit History Chart -->
-                <div class="profits-chart-container">
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <h3>تاريخ الأرباح</h3>
-                            <div class="chart-period">
-                                <button class="period-btn active" data-period="month">شهر</button>
-                                <button class="period-btn" data-period="quarter">ربع سنة</button>
-                                <button class="period-btn" data-period="year">سنة</button>
+                        <div class="stats-card-content">
+                            <h3>إجمالي الأرباح</h3>
+                            <h2 id="total-profit-sum">0 دينار</h2>
+                            <div class="stats-card-detail">
+                                <span>منذ بداية الاستثمار</span>
                             </div>
                         </div>
-                        <div class="chart-body">
-                            <canvas id="profit-history-chart"></canvas>
+                    </div>
+                    <div class="card stats-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                        <div class="stats-card-icon blue">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stats-card-content">
+                            <h3>هذا الشهر</h3>
+                            <h2 id="current-month-profit">0 دينار</h2>
+                            <div class="stats-card-detail" id="month-profit-change">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>0%</span>
+                                <span>عن الشهر السابق</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card stats-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                        <div class="stats-card-icon purple">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="stats-card-content">
+                            <h3>متوسط العائد</h3>
+                            <h2 id="average-return">0%</h2>
+                            <div class="stats-card-detail">
+                                <span>سنوياً</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Profit Payment History -->
-                <div class="profit-payments">
-                    <div class="section-header">
-                        <h3>سجل دفعات الأرباح</h3>
-                        <button class="btn-outline">
-                            <i class="fas fa-download"></i>
-                            <span>تصدير</span>
-                        </button>
+                <!-- الرسوم البيانية للأرباح -->
+                <div class="charts-container grid-2">
+                    <div class="card chart-card animate__animated animate__fadeInUp">
+                        <div class="card-header">
+                            <h3>تطور الأرباح الشهرية</h3>
+                            <div class="chart-options">
+                                <select id="profit-trend-period">
+                                    <option value="6">آخر 6 أشهر</option>
+                                    <option value="12" selected>آخر 12 شهر</option>
+                                    <option value="24">آخر 24 شهر</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="profit-trend-chart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="payments-table-container">
-                        <table class="payments-table">
-                            <thead>
-                                <tr>
-                                    <th>التاريخ</th>
-                                    <th>الفترة</th>
-                                    <th>المبلغ</th>
-                                    <th>الحالة</th>
-                                </tr>
-                            </thead>
-                            <tbody id="profit-payments-body">
-                                <!-- Profit payments will be populated here -->
-                            </tbody>
-                        </table>
+                    <div class="card chart-card animate__animated animate__fadeInUp">
+                        <div class="card-header">
+                            <h3>توزيع الأرباح حسب نوع الاستثمار</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="profit-distribution-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- جدول سجل الأرباح -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>سجل الأرباح</h3>
+                        <div>
+                            <button id="export-profits" class="btn btn-outline">
+                                <i class="fas fa-file-export"></i>
+                                <span>تصدير التقرير</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="filter-bar">
+                            <div class="filter-group">
+                                <label for="profit-year-filter">السنة</label>
+                                <select id="profit-year-filter">
+                                    <option value="2025">2025</option>
+                                    <option value="2024" selected>2024</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2022">2022</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="profit-investment-filter">الاستثمار</label>
+                                <select id="profit-investment-filter">
+                                    <option value="all">جميع الاستثمارات</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>الشهر</th>
+                                        <th>نوع الاستثمار</th>
+                                        <th>المبلغ المستثمر</th>
+                                        <th>نسبة الربح</th>
+                                        <th>قيمة الربح</th>
+                                        <th>تاريخ الاستحقاق</th>
+                                        <th>الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="profits-table">
+                                    <tr class="placeholder-row">
+                                        <td colspan="7" class="text-center">جاري تحميل بيانات الأرباح...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -495,100 +552,107 @@
             <section id="withdraw-page" class="page">
                 <div class="page-header">
                     <h2>طلب سحب</h2>
-                    <p>سحب الأموال من رصيد الاستثمار</p>
+                    <p>سحب الأرباح أو جزء من الاستثمار</p>
                 </div>
 
-                <div class="withdraw-container">
-                    <div class="balance-info">
-                        <div class="balance-card">
-                            <h3>الرصيد المتاح للسحب</h3>
-                            <div class="balance-amount">
-                                <span id="available-balance">000,000,000</span>
-                                <span class="currency">دينار</span>
-                            </div>
-                            <p class="balance-warning">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <span>تنبيه: سحب المبالغ يؤدي إلى قطع الفائدة عنها للشهر بالكامل</span>
-                            </p>
+                <div class="cards-container">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>إنشاء طلب سحب جديد</h3>
                         </div>
-                    </div>
-
-                    <div class="withdraw-form-container">
-                        <form id="withdraw-form">
-                            <div class="form-group">
-                                <label for="withdraw-amount">مبلغ السحب</label>
-                                <div class="input-group">
-                                    <i class="fas fa-money-bill-wave"></i>
-                                    <input type="number" id="withdraw-amount" placeholder="أدخل المبلغ" required>
-                                    <span class="currency-suffix">دينار</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="withdrawal-method">طريقة السحب</label>
-                                <div class="input-group">
-                                    <i class="fas fa-university"></i>
-                                    <select id="withdrawal-method" required>
-                                        <option value="">اختر طريقة السحب</option>
-                                        <option value="bank">تحويل بنكي</option>
-                                        <option value="cash">استلام نقدي</option>
-                                        <option value="wallet">محفظة إلكترونية</option>
+                        <div class="card-body">
+                            <form id="withdraw-form">
+                                <div class="form-group">
+                                    <label for="withdraw-type">نوع السحب</label>
+                                    <select id="withdraw-type" required>
+                                        <option value="">اختر نوع السحب</option>
+                                        <option value="profit">سحب أرباح</option>
+                                        <option value="partial">سحب جزئي للاستثمار</option>
+                                        <option value="full">سحب كامل الاستثمار</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="form-group bank-details hidden" id="bank-details">
-                                <label for="bank-account">رقم الحساب البنكي</label>
-                                <div class="input-group">
-                                    <i class="fas fa-credit-card"></i>
-                                    <input type="text" id="bank-account" placeholder="أدخل رقم الحساب">
+                                <div class="form-group" id="investment-select-group">
+                                    <label for="withdraw-investment">الاستثمار</label>
+                                    <select id="withdraw-investment" required>
+                                        <option value="">اختر الاستثمار</option>
+                                    </select>
                                 </div>
-                                <label for="bank-name">اسم البنك</label>
-                                <div class="input-group">
-                                    <i class="fas fa-university"></i>
-                                    <input type="text" id="bank-name" placeholder="أدخل اسم البنك">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="withdraw-amount">المبلغ</label>
+                                        <div class="input-group">
+                                            <input type="number" id="withdraw-amount" step="0.01" min="0" placeholder="أدخل المبلغ" required>
+                                            <span class="input-group-text">دينار</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="withdraw-available">المبلغ المتاح</label>
+                                        <div class="input-group">
+                                            <input type="text" id="withdraw-available" readonly disabled>
+                                            <span class="input-group-text">دينار</span>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group wallet-details hidden" id="wallet-details">
-                                <label for="wallet-number">رقم المحفظة</label>
-                                <div class="input-group">
-                                    <i class="fas fa-wallet"></i>
-                                    <input type="text" id="wallet-number" placeholder="أدخل رقم المحفظة">
+                                <div class="form-group">
+                                    <label for="withdraw-reason">سبب السحب</label>
+                                    <textarea id="withdraw-reason" rows="3" placeholder="اذكر سبب السحب (اختياري)"></textarea>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="withdraw-note">ملاحظات</label>
-                                <textarea id="withdraw-note" placeholder="أي ملاحظات إضافية..."></textarea>
-                            </div>
-                            <div class="confirmation-checkbox">
-                                <input type="checkbox" id="confirm-withdrawal" required>
-                                <label for="confirm-withdrawal">أقر بأنني أوافق على قطع الفائدة عن المبلغ المسحوب للشهر بالكامل</label>
-                            </div>
-                            <div class="form-actions">
-                                <button type="button" class="btn-outline" id="cancel-withdraw">إلغاء</button>
-                                <button type="submit" class="btn-primary">تأكيد طلب السحب</button>
-                            </div>
-                        </form>
+                                <div class="form-group">
+                                    <label for="withdraw-method">طريقة الاستلام</label>
+                                    <select id="withdraw-method" required>
+                                        <option value="">اختر طريقة الاستلام</option>
+                                        <option value="bank">تحويل بنكي</option>
+                                        <option value="cash">استلام نقدي</option>
+                                        <option value="check">شيك</option>
+                                    </select>
+                                </div>
+                                <div class="form-group bank-details" style="display: none;">
+                                    <label for="withdraw-bank-name">اسم البنك</label>
+                                    <input type="text" id="withdraw-bank-name" placeholder="أدخل اسم البنك">
+                                </div>
+                                <div class="form-group bank-details" style="display: none;">
+                                    <label for="withdraw-account-number">رقم الحساب</label>
+                                    <input type="text" id="withdraw-account-number" placeholder="أدخل رقم الحساب البنكي">
+                                </div>
+                                <div class="form-group">
+                                    <label for="withdraw-notes">ملاحظات إضافية</label>
+                                    <textarea id="withdraw-notes" rows="3" placeholder="أي ملاحظات إضافية تتعلق بطلب السحب"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">تقديم طلب السحب</button>
+                                    <button type="reset" class="btn btn-outline">إلغاء</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
-                <div class="withdrawal-history">
-                    <div class="section-header">
+                
+                <!-- جدول طلبات السحب السابقة -->
+                <div class="card">
+                    <div class="card-header">
                         <h3>طلبات السحب السابقة</h3>
                     </div>
-                    <div class="withdrawals-table-container">
-                        <table class="withdrawals-table">
-                            <thead>
-                                <tr>
-                                    <th>التاريخ</th>
-                                    <th>المبلغ</th>
-                                    <th>طريقة السحب</th>
-                                    <th>الحالة</th>
-                                    <th>تفاصيل</th>
-                                </tr>
-                            </thead>
-                            <tbody id="withdrawals-history-body">
-                                <!-- Withdrawal history will be populated here -->
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>رقم الطلب</th>
+                                        <th>تاريخ الطلب</th>
+                                        <th>نوع السحب</th>
+                                        <th>المبلغ</th>
+                                        <th>طريقة الاستلام</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="withdraw-requests-table">
+                                    <tr class="placeholder-row">
+                                        <td colspan="7" class="text-center">جاري تحميل طلبات السحب...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -597,203 +661,236 @@
             <section id="profile-page" class="page">
                 <div class="page-header">
                     <h2>الملف الشخصي</h2>
-                    <p>إدارة معلوماتك الشخصية</p>
+                    <p>إدارة معلوماتك الشخصية وتفاصيل حسابك</p>
                 </div>
 
-                <div class="profile-container">
-                    <div class="profile-sidebar">
-                        <div class="profile-image-container">
-                            <div class="profile-image">
-                                <img src="assets/default-avatar.png" alt="صورة المستخدم" id="profile-image">
-                                <button class="change-image-btn">
-                                    <i class="fas fa-camera"></i>
-                                </button>
+                <div class="cards-container grid-2">
+                    <!-- بطاقة المعلومات الشخصية -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>المعلومات الشخصية</h3>
+                            <button id="edit-profile-btn" class="btn btn-sm btn-outline">
+                                <i class="fas fa-edit"></i>
+                                <span>تعديل</span>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="profile-data" id="profile-view-mode">
+                                <div class="profile-avatar">
+                                    <div class="user-avatar xl-large" id="profile-avatar">
+                                        <span id="profile-avatar-letter">أ</span>
+                                    </div>
+                                    <h2 id="profile-fullname">اسم المستخدم</h2>
+                                    <span class="badge badge-success" id="profile-status">نشط</span>
+                                </div>
+                                
+                                <div class="profile-info-group">
+                                    <h3>معلومات الاتصال</h3>
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-envelope"></i>
+                                            <span>البريد الإلكتروني</span>
+                                        </div>
+                                        <div class="profile-info-value" id="profile-email">example@domain.com</div>
+                                    </div>
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-phone"></i>
+                                            <span>رقم الهاتف</span>
+                                        </div>
+                                        <div class="profile-info-value" id="profile-phone">+962 xxx xxx xxx</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-info-group">
+                                    <h3>معلومات إضافية</h3>
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-id-card"></i>
+                                            <span>رقم المستثمر</span>
+                                        </div>
+                                        <div class="profile-info-value" id="profile-investor-id">INV-12345</div>
+                                    </div>
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>تاريخ الانضمام</span>
+                                        </div>
+                                        <div class="profile-info-value" id="profile-join-date">01/01/2023</div>
+                                    </div>
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            <span>العنوان</span>
+                                        </div>
+                                        <div class="profile-info-value" id="profile-address">عمان، الأردن</div>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 id="profile-name">اسم المستثمر</h3>
-                            <p id="profile-id">معرف المستثمر: #12345</p>
-                            <p id="profile-status" class="status active">الحالة: نشط</p>
+                            
+                            <!-- نموذج تعديل الملف الشخصي -->
+                            <div class="profile-edit-form" id="profile-edit-mode" style="display: none;">
+                                <form id="profile-edit-form">
+                                    <div class="form-group">
+                                        <label for="edit-fullname">الاسم الكامل</label>
+                                        <input type="text" id="edit-fullname" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-phone">رقم الهاتف</label>
+                                        <input type="tel" id="edit-phone" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-address">العنوان</label>
+                                        <textarea id="edit-address" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-action">
+                                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                                        <button type="button" id="cancel-edit-btn" class="btn btn-outline">إلغاء</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile-content">
-                        <div class="profile-tabs">
-                            <button class="profile-tab active" data-tab="personal">المعلومات الشخصية</button>
-                            <button class="profile-tab" data-tab="security">الأمان والخصوصية</button>
-                            <button class="profile-tab" data-tab="notifications">الإشعارات</button>
+                    
+                    <!-- بطاقة أمان الحساب -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>أمان الحساب</h3>
                         </div>
-                        
-                        <div class="profile-tab-content active" id="personal-tab">
-                            <form id="personal-info-form">
-                                <div class="form-group">
-                                    <label for="full-name">الاسم الكامل</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-user"></i>
-                                        <input type="text" id="full-name" value="محمد أحمد العبدالله">
+                        <div class="card-body">
+                            <div class="security-options">
+                                <div class="security-option">
+                                    <div class="security-option-info">
+                                        <h4>تغيير كلمة المرور</h4>
+                                        <p>قم بتحديث كلمة المرور الخاصة بك بشكل دوري للحفاظ على أمان حسابك</p>
                                     </div>
+                                    <button id="change-password-btn" class="btn btn-sm btn-outline">
+                                        <i class="fas fa-key"></i>
+                                        <span>تغيير</span>
+                                    </button>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="phone-number">رقم الهاتف</label>
-                                        <div class="input-group">
-                                            <i class="fas fa-phone"></i>
-                                            <input type="tel" id="phone-number" value="0501234567">
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="email-address">البريد الإلكتروني</label>
-                                        <div class="input-group">
-                                            <i class="fas fa-envelope"></i>
-                                            <input type="email" id="email-address" value="example@mail.com">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="address">العنوان</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <input type="text" id="address" value="الرياض، حي النخيل">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="id-card">رقم البطاقة</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-id-card"></i>
-                                        <input type="text" id="id-card" value="ID12345678" readonly>
-                                    </div>
-                                    <small class="form-hint">لا يمكن تعديل رقم البطاقة</small>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="submit" class="btn-primary">حفظ التغييرات</button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div class="profile-tab-content" id="security-tab">
-                            <form id="security-form">
-                                <div class="form-group">
-                                    <label for="current-password">كلمة المرور الحالية</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-lock"></i>
-                                        <input type="password" id="current-password">
-                                        <button type="button" class="toggle-password">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="new-password">كلمة المرور الجديدة</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-lock"></i>
-                                        <input type="password" id="new-password">
-                                        <button type="button" class="toggle-password">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="confirm-new-password">تأكيد كلمة المرور الجديدة</label>
-                                    <div class="input-group">
-                                        <i class="fas fa-lock"></i>
-                                        <input type="password" id="confirm-new-password">
-                                        <button type="button" class="toggle-password">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <h4>المصادقة الثنائية</h4>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="two-factor" class="toggle-input">
-                                        <label for="two-factor" class="toggle-label"></label>
-                                        <span>تفعيل المصادقة الثنائية</span>
-                                    </div>
-                                    <small class="form-hint">يوصى بتفعيل المصادقة الثنائية لزيادة أمان حسابك</small>
-                                </div>
-                                <div class="form-actions">
-                                    <button type="submit" class="btn-primary">تحديث كلمة المرور</button>
-                                </div>
-                            </form>
-                        </div>
-                        
-                        <div class="profile-tab-content" id="notifications-tab">
-                            <div class="notifications-settings">
-                                <h4>إعدادات الإشعارات</h4>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>الإشعارات داخل التطبيق</h5>
-                                        <p>عرض إشعارات حول الأرباح والعمليات داخل التطبيق</p>
+                                
+                                <div class="security-option">
+                                    <div class="security-option-info">
+                                        <h4>التحقق بخطوتين</h4>
+                                        <p>تفعيل التحقق بخطوتين لمزيد من الأمان عند تسجيل الدخول</p>
                                     </div>
                                     <div class="toggle-switch">
-                                        <input type="checkbox" id="in-app-notifications" class="toggle-input" checked>
-                                        <label for="in-app-notifications" class="toggle-label"></label>
-                                    </div>
-                                </div>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>البريد الإلكتروني</h5>
-                                        <p>إرسال إشعارات عبر البريد الإلكتروني</p>
-                                    </div>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="email-notifications" class="toggle-input" checked>
-                                        <label for="email-notifications" class="toggle-label"></label>
-                                    </div>
-                                </div>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>الرسائل النصية</h5>
-                                        <p>إرسال إشعارات عبر رسائل نصية قصيرة</p>
-                                    </div>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="sms-notifications" class="toggle-input">
-                                        <label for="sms-notifications" class="toggle-label"></label>
+                                        <input type="checkbox" id="two-factor-toggle" class="toggle-input">
+                                        <label for="two-factor-toggle" class="toggle-label"></label>
                                     </div>
                                 </div>
                                 
-                                <h4 class="mt-4">أنواع الإشعارات</h4>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>دفع الأرباح</h5>
-                                        <p>إشعارات عند إيداع الأرباح في حسابك</p>
+                                <div class="security-option">
+                                    <div class="security-option-info">
+                                        <h4>إشعارات تسجيل الدخول</h4>
+                                        <p>تلقي إشعار عند تسجيل الدخول إلى حسابك من جهاز جديد</p>
                                     </div>
                                     <div class="toggle-switch">
-                                        <input type="checkbox" id="profit-notifications" class="toggle-input" checked>
-                                        <label for="profit-notifications" class="toggle-label"></label>
+                                        <input type="checkbox" id="login-alerts-toggle" class="toggle-input" checked>
+                                        <label for="login-alerts-toggle" class="toggle-label"></label>
                                     </div>
-                                </div>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>طلبات السحب</h5>
-                                        <p>إشعارات عن حالة طلبات السحب</p>
-                                    </div>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="withdraw-notifications" class="toggle-input" checked>
-                                        <label for="withdraw-notifications" class="toggle-label"></label>
-                                    </div>
-                                </div>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>تذكيرات استحقاق الأرباح</h5>
-                                        <p>إشعارات تذكيرية قبل موعد استحقاق الأرباح</p>
-                                    </div>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="reminder-notifications" class="toggle-input" checked>
-                                        <label for="reminder-notifications" class="toggle-label"></label>
-                                    </div>
-                                </div>
-                                <div class="notification-option">
-                                    <div class="option-text">
-                                        <h5>أخبار وتحديثات</h5>
-                                        <p>أخبار ومعلومات عن تحديثات النظام والعروض الخاصة</p>
-                                    </div>
-                                    <div class="toggle-switch">
-                                        <input type="checkbox" id="news-notifications" class="toggle-input">
-                                        <label for="news-notifications" class="toggle-label"></label>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-actions">
-                                    <button type="button" class="btn-primary">حفظ الإعدادات</button>
                                 </div>
                             </div>
+                            
+                            <!-- نموذج تغيير كلمة المرور -->
+                            <div id="change-password-form-container" style="display: none;">
+                                <hr>
+                                <h4>تغيير كلمة المرور</h4>
+                                <form id="change-password-form">
+                                    <div class="form-group">
+                                        <label for="current-password">كلمة المرور الحالية</label>
+                                        <div class="input-group">
+                                            <input type="password" id="current-password" required>
+                                            <button type="button" class="password-toggle">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="new-password">كلمة المرور الجديدة</label>
+                                        <div class="input-group">
+                                            <input type="password" id="new-password" required>
+                                            <button type="button" class="password-toggle">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirm-new-password">تأكيد كلمة المرور الجديدة</label>
+                                        <div class="input-group">
+                                            <input type="password" id="confirm-new-password" required>
+                                            <button type="button" class="password-toggle">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="password-strength" id="password-strength">
+                                        <div class="strength-meter">
+                                            <div class="strength-bar" style="width: 0%;"></div>
+                                        </div>
+                                        <div class="strength-text">قوة كلمة المرور</div>
+                                    </div>
+                                    <div class="form-action">
+                                        <button type="submit" class="btn btn-primary">تغيير كلمة المرور</button>
+                                        <button type="button" id="cancel-password-change-btn" class="btn btn-outline">إلغاء</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- معلومات الحساب البنكي -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>معلومات الحساب البنكي</h3>
+                        <button id="edit-bank-info-btn" class="btn btn-sm btn-outline">
+                            <i class="fas fa-edit"></i>
+                            <span>تعديل</span>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div id="bank-info-view-mode">
+                            <div class="bank-accounts-list" id="bank-accounts-container">
+                                <div class="placeholder-message">
+                                    <p>لم يتم إضافة أي حسابات بنكية بعد</p>
+                                    <button id="add-bank-account-btn" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i>
+                                        <span>إضافة حساب بنكي</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- نموذج تعديل معلومات الحساب البنكي -->
+                        <div id="bank-info-edit-mode" style="display: none;">
+                            <form id="bank-info-form">
+                                <div class="form-group">
+                                    <label for="bank-name">اسم البنك</label>
+                                    <input type="text" id="bank-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-holder">اسم صاحب الحساب</label>
+                                    <input type="text" id="account-holder" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="account-number">رقم الحساب</label>
+                                    <input type="text" id="account-number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="iban">رقم IBAN</label>
+                                    <input type="text" id="iban">
+                                </div>
+                                <div class="form-group">
+                                    <label for="branch-name">اسم الفرع</label>
+                                    <input type="text" id="branch-name">
+                                </div>
+                                <div class="form-action">
+                                    <button type="submit" class="btn btn-primary">حفظ المعلومات</button>
+                                    <button type="button" id="cancel-bank-edit-btn" class="btn btn-outline">إلغاء</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -803,116 +900,158 @@
             <section id="settings-page" class="page">
                 <div class="page-header">
                     <h2>الإعدادات</h2>
-                    <p>تخصيص إعدادات التطبيق</p>
+                    <p>تخصيص إعدادات التطبيق والإشعارات</p>
                 </div>
                 
-                <div class="settings-container">
-                    <div class="settings-group">
-                        <h3>الإعدادات العامة</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>اللغة</h4>
-                                <p>تغيير لغة التطبيق</p>
-                            </div>
-                            <div class="setting-control">
-                                <select id="language-setting">
-                                    <option value="ar" selected>العربية</option>
-                                    <option value="en">الإنجليزية</option>
-                                </select>
-                            </div>
+                <div class="cards-container">
+                    <!-- إعدادات التنبيهات والإشعارات -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>التنبيهات والإشعارات</h3>
                         </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>العملة</h4>
-                                <p>تغيير عملة العرض</p>
-                            </div>
-                            <div class="setting-control">
-                                <select id="currency-setting">
-                                    <option value="دينار" selected>دينار</option>
-                                    <option value="دولار">دولار</option>
-                                    <option value="يورو">يورو</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>الوضع الداكن</h4>
-                                <p>تفعيل المظهر الداكن للتطبيق</p>
-                            </div>
-                            <div class="setting-control">
+                        <div class="card-body">
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنبيهات الأرباح</h4>
+                                    <p>إشعارات عندما يتم إضافة أرباح جديدة إلى حسابك</p>
+                                </div>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="dark-mode" class="toggle-input">
-                                    <label for="dark-mode" class="toggle-label"></label>
+                                    <input type="checkbox" id="profit-alerts-toggle" class="toggle-input" checked>
+                                    <label for="profit-alerts-toggle" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنبيهات المعاملات</h4>
+                                    <p>إشعارات عند إجراء معاملات جديدة على حسابك</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="transaction-alerts-toggle" class="toggle-input" checked>
+                                    <label for="transaction-alerts-toggle" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنبيهات طلبات السحب</h4>
+                                    <p>إشعارات عند تغيير حالة طلبات السحب الخاصة بك</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="withdraw-alerts-toggle" class="toggle-input" checked>
+                                    <label for="withdraw-alerts-toggle" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنبيهات البريد الإلكتروني</h4>
+                                    <p>استلام إشعارات مهمة عبر البريد الإلكتروني</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="email-alerts-toggle" class="toggle-input" checked>
+                                    <label for="email-alerts-toggle" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنبيهات الرسائل النصية</h4>
+                                    <p>استلام تنبيهات مهمة عبر الرسائل النصية SMS</p>
+                                </div>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="sms-alerts-toggle" class="toggle-input">
+                                    <label for="sms-alerts-toggle" class="toggle-label"></label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="settings-group">
-                        <h3>تنبيهات وإشعارات</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>تنبيهات الأرباح</h4>
-                                <p>إرسال تنبيهات عند استحقاق الأرباح</p>
-                            </div>
-                            <div class="setting-control">
+                    <!-- إعدادات العرض -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>إعدادات العرض</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>الوضع الليلي</h4>
+                                    <p>تفعيل وضع العرض الليلي لراحة العين</p>
+                                </div>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="profit-alerts" class="toggle-input" checked>
-                                    <label for="profit-alerts" class="toggle-label"></label>
+                                    <input type="checkbox" id="dark-mode-toggle" class="toggle-input">
+                                    <label for="dark-mode-toggle" class="toggle-label"></label>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>تنبيهات العمليات</h4>
-                                <p>إرسال تنبيهات عند إجراء عمليات على الحساب</p>
-                            </div>
-                            <div class="setting-control">
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>عرض المبالغ بالعملة المحلية</h4>
+                                    <p>عرض المبالغ بالدينار الأردني بدلاً من الدولار الأمريكي</p>
+                                </div>
                                 <div class="toggle-switch">
-                                    <input type="checkbox" id="transaction-alerts" class="toggle-input" checked>
-                                    <label for="transaction-alerts" class="toggle-label"></label>
+                                    <input type="checkbox" id="local-currency-toggle" class="toggle-input" checked>
+                                    <label for="local-currency-toggle" class="toggle-label"></label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>اللغة</h4>
+                                    <p>تغيير لغة واجهة التطبيق</p>
+                                </div>
+                                <div class="settings-control">
+                                    <select id="language-select">
+                                        <option value="ar" selected>العربية</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنسيق التاريخ</h4>
+                                    <p>تغيير طريقة عرض التواريخ في التطبيق</p>
+                                </div>
+                                <div class="settings-control">
+                                    <select id="date-format-select">
+                                        <option value="dmy" selected>يوم/شهر/سنة</option>
+                                        <option value="mdy">شهر/يوم/سنة</option>
+                                        <option value="ymd">سنة/شهر/يوم</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="settings-group">
-                        <h3>الخصوصية والأمان</h3>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>قفل التطبيق تلقائياً</h4>
-                                <p>قفل التطبيق بعد فترة من عدم النشاط</p>
+                    <!-- خيارات متقدمة -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>خيارات متقدمة</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>تنزيل نسخة من البيانات</h4>
+                                    <p>تنزيل نسخة من بياناتك المالية والمعاملات</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm" id="download-data-btn">
+                                    <i class="fas fa-download"></i>
+                                    <span>تنزيل</span>
+                                </button>
                             </div>
-                            <div class="setting-control">
-                                <select id="auto-lock">
-                                    <option value="0">غير مفعل</option>
-                                    <option value="1" selected>بعد دقيقة</option>
-                                    <option value="5">بعد 5 دقائق</option>
-                                    <option value="10">بعد 10 دقائق</option>
-                                </select>
+                            
+                            <div class="settings-option">
+                                <div class="settings-option-info">
+                                    <h4>حذف الحساب</h4>
+                                    <p>حذف حسابك وجميع بياناتك من النظام بشكل نهائي</p>
+                                </div>
+                                <button class="btn btn-danger btn-sm" id="delete-account-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                    <span>حذف</span>
+                                </button>
                             </div>
                         </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <h4>سجل الجلسات النشطة</h4>
-                                <p>عرض وإدارة الجلسات النشطة لحسابك</p>
-                            </div>
-                            <div class="setting-control">
-                                <button class="btn-outline btn-sm">عرض السجل</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-actions">
-                        <button class="btn-outline" id="reset-settings">استعادة الإعدادات الافتراضية</button>
-                        <button class="btn-primary" id="save-settings">حفظ الإعدادات</button>
                     </div>
                 </div>
             </section>
@@ -927,146 +1066,62 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="notifications-content">
-            <div class="notification-tabs">
-                <button class="notification-tab active" data-tab="all">الكل</button>
-                <button class="notification-tab" data-tab="profits">الأرباح</button>
-                <button class="notification-tab" data-tab="transactions">المعاملات</button>
-            </div>
-            <div class="notifications-list" id="notifications-list">
-                <!-- Will be populated dynamically -->
-                <div class="notification-item unread">
-                    <div class="notification-icon green">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div class="notification-content">
-                        <h4>إيداع أرباح</h4>
-                        <p>تم إيداع أرباح بقيمة 1,750,000 دينار في حسابك</p>
-                        <span class="notification-time">منذ ساعتين</span>
-                    </div>
-                    <button class="notification-action">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
-                <div class="notification-item">
-                    <div class="notification-icon blue">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <div class="notification-content">
-                        <h4>طلب سحب</h4>
-                        <p>تم الموافقة على طلب السحب رقم #12345</p>
-                        <span class="notification-time">منذ يوم</span>
-                    </div>
-                    <button class="notification-action">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
-                <div class="notification-item">
-                    <div class="notification-icon orange">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <div class="notification-content">
-                        <h4>تذكير بالاستحقاق</h4>
-                        <p>أرباحك مستحقة خلال 3 أيام</p>
-                        <span class="notification-time">منذ يومين</span>
-                    </div>
-                    <button class="notification-action">
-                        <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                </div>
+        <div class="notifications-body" id="notifications-container">
+            <div class="notification-placeholder">
+                <i class="fas fa-bell-slash"></i>
+                <p>لا توجد إشعارات جديدة</p>
             </div>
         </div>
         <div class="notifications-footer">
-            <button id="mark-all-read">
+            <button id="mark-all-read" class="btn btn-link">
                 <i class="fas fa-check-double"></i>
-                <span>تعيين الكل كمقروء</span>
+                <span>تعليم الكل كمقروء</span>
             </button>
         </div>
     </div>
 
-    <!-- Modal Components -->
-    <div class="modal-overlay" id="transaction-details-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>تفاصيل المعاملة</h3>
-                <button class="modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
+    <!-- User Menu Panel -->
+    <div class="user-menu-panel" id="user-menu-panel">
+        <div class="user-menu-header">
+            <div class="user-avatar medium">
+                <img src="assets/default-avatar.png" alt="صورة المستخدم" id="menu-avatar">
             </div>
-            <div class="modal-body" id="transaction-details-content">
-                <!-- Will be populated dynamically -->
+            <div class="user-menu-info">
+                <h3 id="menu-user-name">اسم المستثمر</h3>
+                <p id="menu-user-email">email@example.com</p>
             </div>
+        </div>
+        <div class="user-menu-body">
+            <a href="#profile" data-page="profile" class="user-menu-item">
+                <i class="fas fa-user"></i>
+                <span>الملف الشخصي</span>
+            </a>
+            <a href="#settings" data-page="settings" class="user-menu-item">
+                <i class="fas fa-cog"></i>
+                <span>الإعدادات</span>
+            </a>
+            <a href="#" id="link-investor-menu-item" class="user-menu-item">
+                <i class="fas fa-link"></i>
+                <span>ربط حساب مستثمر</span>
+            </a>
+            <a href="#" id="help-support-item" class="user-menu-item">
+                <i class="fas fa-question-circle"></i>
+                <span>المساعدة والدعم</span>
+            </a>
+        </div>
+        <div class="user-menu-footer">
+            <button id="user-menu-logout-btn" class="btn btn-outline btn-block">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>تسجيل الخروج</span>
+            </button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="withdraw-success-modal">
-        <div class="modal">
-            <div class="modal-header">
-                <h3>تم استلام طلب السحب</h3>
-                <button class="modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="success-message">
-                    <div class="success-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h3>طلب السحب تم بنجاح</h3>
-                    <p>تم استلام طلب السحب الخاص بك وسيتم معالجته في أقرب وقت.</p>
-                    <div class="transaction-details">
-                        <div class="detail-item">
-                            <span class="detail-label">رقم الطلب:</span>
-                            <span class="detail-value" id="withdraw-request-id">#WD-123456</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">المبلغ:</span>
-                            <span class="detail-value" id="withdraw-request-amount">5,000,000 دينار</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">تاريخ الطلب:</span>
-                            <span class="detail-value" id="withdraw-request-date">15/04/2025</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">الحالة:</span>
-                            <span class="detail-value status">قيد المراجعة</span>
-                        </div>
-                    </div>
-                    <div class="note-message">
-                        <i class="fas fa-info-circle"></i>
-                        <p>سيتم إشعارك بأي تغيير في حالة الطلب عبر الإشعارات والبريد الإلكتروني.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-outline modal-close-btn">إغلاق</button>
-                <button class="btn-primary" id="view-withdrawal-status">متابعة حالة الطلب</button>
-            </div>
-        </div>
-    </div>
+    <!-- Toasts Container -->
+    <div class="toasts-container" id="toasts-container"></div>
 
-    <!-- Toast Notifications -->
-    <div class="toast-container" id="toast-container">
-        <!-- Toast notifications will be added here dynamically -->
-    </div>
-
-    <!-- Firebase Configuration -->
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDGpAHia_wEmrhnmYjrPf1n1TrAzwEMiAI",
-            authDomain: "messageemeapp.firebaseapp.com",
-            databaseURL: "https://messageemeapp-default-rtdb.firebaseio.com",
-            projectId: "messageemeapp",
-            storageBucket: "messageemeapp.appspot.com",
-            messagingSenderId: "255034474844",
-            appId: "1:255034474844:web:5e3b7a6bc4b2fb94cc4199"
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-    </script>
-
-    <!-- App Scripts -->
+    <!-- تضمين ملفات JavaScript -->
+    <script src="auth-manager.js"></script>
     <script src="wallet-app.js"></script>
 </body>
 </html>
