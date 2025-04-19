@@ -456,10 +456,80 @@ function logout() {
 // التحقق من معرف المستثمر
 function verifyInvestorId(investorId) {
     return new Promise((resolve, reject) => {
-        // الاتصال بالنظام الرئيسي للتحقق من المعرف
-        firebase.database().ref(`investors/${investorId}`).once('value')
+        // بدل البحث عن المعرف كمسار مباشر، نبحث في مصفوفة المستثمرين
+        firebase.database().ref(`investors`).once('value')
             .then((snapshot) => {
+                const investors = snapshot.val();
+                
+                // التحقق من وجود قائمة المستثمرين
+                if (!investors) {
+                    resolve(false);
+                    return;
+                }
+                
+                // البحث في عناصر المستثمرين للعثور على المعرف المطابق
+                let found = false;
+                
+                // التكرار عبر المستثمرين (الأرقام في الصورة)
+                Object.keys(investors).forEach(key => {
+                    const investorData = investors[key];
+                    
+                    // نتحقق من معرف المستثمر
+                    if (investorData && investorData.id && investorData.id.toString() === investorId.toString()) {
+                        found = true;
+                    }
+                });
+                
+                resolve(found);
+            })
+            .catch((error) => {
+                console.error("خطأ في التحقق من معرف المستثمر:", error);
+                reject(error);
+            });
+    });
+}
+
+function verifyInvestorId(investorId) {
+    return new Promise((resolve, reject) => {
+        // البحث عن المستثمرين الذين لديهم هذا المعرف
+        firebase.database().ref('investors').orderByChild('id').equalTo(investorId).once('value')
+            .then((snapshot) => {
+                // إذا كان هناك نتيجة، فالمعرف موجود
                 resolve(snapshot.exists());
+            })
+            .catch((error) => {
+                console.error("خطأ في التحقق من معرف المستثمر:", error);
+                reject(error);
+            });
+    });
+}
+
+function verifyInvestorId(investorId) {
+    console.log(`التحقق من معرف المستثمر: ${investorId}`);
+    
+    return new Promise((resolve, reject) => {
+        // نسجل المسار الذي نبحث فيه
+        const path = 'investors';
+        console.log(`مسار البحث: ${path}`);
+        
+        firebase.database().ref(path).once('value')
+            .then((snapshot) => {
+                const data = snapshot.val();
+                console.log('بيانات المستثمرين:', data);
+                
+                // تحقق من وجود المعرف
+                let found = false;
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        console.log(`المفتاح: ${key}, المعرف: ${data[key].id}`);
+                        if (data[key].id && data[key].id.toString() === investorId.toString()) {
+                            found = true;
+                        }
+                    });
+                }
+                
+                console.log(`نتيجة البحث: ${found}`);
+                resolve(found);
             })
             .catch((error) => {
                 console.error("خطأ في التحقق من معرف المستثمر:", error);
