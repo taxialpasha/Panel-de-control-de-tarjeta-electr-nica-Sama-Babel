@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>بوابة المستثمر | نظام الاستثمار المتكامل</title>
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    
+    <!-- Google Fonts - Tajawal -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    
+    <!-- ApexCharts for interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    <!-- Firebase for realtime data -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <!-- CSS Styles -->
+    <link href="investor-styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="investor-app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    <span>بوابة المستثمر</span>
+                </div>
+                <button class="menu-toggle">
+                    <i class="bx bx-menu"></i>
+                </button>
+            </div>
+            
+            <div class="investor-profile">
+                <div class="avatar">
+                    <span id="investor-initial">م</span>
+                </div>
+                <div class="info">
+                    <h3 id="investor-name">محمد عبد الله</h3>
+                    <p class="investor-id">رقم العضوية: <span id="membership-number">INV7842</span></p>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active">
+                        <a href="#dashboard" class="nav-link">
+                            <i class="bx bxs-dashboard"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#investments" class="nav-link">
+                            <i class="bx bx-money"></i>
+                            <span>استثماراتي</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#transactions" class="nav-link">
+                            <i class="bx bx-transfer"></i>
+                            <span>التعاملات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profits" class="nav-link">
+                            <i class="bx bx-coin-stack"></i>
+                            <span>الأرباح</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#withdrawal" class="nav-link">
+                            <i class="bx bx-money-withdraw"></i>
+                            <span>طلب سحب</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#reports" class="nav-link">
+                            <i class="bx bxs-report"></i>
+                            <span>التقارير</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings" class="nav-link">
+                            <i class="bx bx-cog"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="logout-btn">
+                    <i class="bx bx-log-out"></i>
+                    <span>تسجيل الخروج</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="sidebar-toggle">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                    <h1 class="page-title">لوحة التحكم</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="date-display">
+                        <i class="bx bx-calendar"></i>
+                        <span id="current-date">السبت، 19 أبريل 2025</span>
+                    </div>
+                    
+                    <div class="notification-bell">
+                        <i class="bx bx-bell"></i>
+                        <span class="notification-count">3</span>
+                    </div>
+                    
+                    <div class="theme-toggle">
+                        <i class="bx bx-moon"></i>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Page -->
+            <div class="page active" id="dashboard-page">
+                <!-- Investment Card (Looks like a credit card) -->
+                <div class="investment-card">
+                    <div class="card-header">
+                        <div class="card-logo">
+                            <i class="fas fa-chart-line"></i>
+                            <span>نظام الاستثمار المتكامل</span>
+                        </div>
+                        <div class="card-chip">
+                            <img src="./assets/card-chip.svg" alt="Chip">
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="balance-info">
+                            <span class="label">إجمالي الاستثمار</span>
+                            <h2 class="amount" id="total-investment">50,000 دينار</h2>
+                        </div>
+                        
+                        <div class="card-details">
+                            <div class="detail">
+                                <span class="label">الربح الشهري</span>
+                                <span class="value" id="monthly-profit">8,750 دينار</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">الربح اليومي</span>
+                                <span class="value" id="daily-profit">292 دينار</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">نسبة العائد</span>
+                                <span class="value" id="profit-rate">17.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="investor-detail">
+                            <span class="label">المستثمر</span>
+                            <span class="value" id="card-investor-name">محمد عبد الله</span>
+                        </div>
+                        <div class="expiry">
+                            <span class="label">تاريخ بدء الاستثمار</span>
+                            <span class="value" id="investment-date">01/12/2024</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn withdraw">
+                        <i class="bx bx-money-withdraw"></i>
+                        <span>سحب</span>
+                    </button>
+                    <button class="action-btn deposit">
+                        <i class="bx bx-money"></i>
+                        <span>إيداع</span>
+                    </button>
+                    <button class="action-btn profits">
+                        <i class="bx bx-coin-stack"></i>
+                        <span>الأرباح</span>
+                    </button>
+                    <button class="action-btn history">
+                        <i class="bx bx-history"></i>
+                        <span>السجل</span>
+                    </button>
+                </div>
+                
+                <!-- Profit Growth Chart -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>نمو الأرباح</h3>
+                        <div class="chart-period">
+                            <button class="period active">أسبوعي</button>
+                            <button class="period">شهري</button>
+                            <button class="period">سنوي</button>
+                        </div>
+                    </div>
+                    <div id="profit-chart"></div>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-calendar-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>مدة الاستثمار</h4>
+                            <h3 id="investment-duration">140 يوم</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-coin"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>إجمالي الأرباح المستلمة</h4>
+                            <h3 id="total-received-profit">26,250 دينار</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-calendar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>تاريخ الدفع القادم</h4>
+                            <h3 id="next-payment-date">01/05/2025</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="bx bx-trending-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h4>العائد السنوي</h4>
+                            <h3 id="annual-return">210%</h3>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Transactions -->
+                <div class="recent-transactions-section">
+                    <div class="section-header">
+                        <h3>آخر التعاملات</h3>
+                        <a href="#transactions" class="view-all">عرض الكل <i class="bx bx-chevron-left"></i></a>
+                    </div>
+                    
+                    <div class="transactions-list">
+                        <div class="transaction-item deposit">
+                            <div class="transaction-icon">
+                                <i class="bx bx-plus-circle"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>إيداع</h4>
+                                <p>1 أبريل 2025</p>
+                            </div>
+                            <div class="transaction-amount positive">
+                                +10,000 دينار
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item profit">
+                            <div class="transaction-icon">
+                                <i class="bx bx-dollar-circle"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>استلام أرباح</h4>
+                                <p>15 مارس 2025</p>
+                            </div>
+                            <div class="transaction-amount positive">
+                                +8,750 دينار
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item withdraw">
+                            <div class="transaction-icon">
+                                <i class="bx bx-minus-circle"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>سحب</h4>
+                                <p>1 مارس 2025</p>
+                            </div>
+                            <div class="transaction-amount negative">
+                                -5,000 دينار
+                            </div>
+                        </div>
+                        
+                        <div class="transaction-item profit">
+                            <div class="transaction-icon">
+                                <i class="bx bx-dollar-circle"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <h4>استلام أرباح</h4>
+                                <p>15 فبراير 2025</p>
+                            </div>
+                            <div class="transaction-amount positive">
+                                +8,750 دينار
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Withdrawal Request Page -->
+            <div class="page" id="withdrawal-page">
+                <div class="page-header">
+                    <h2>طلب سحب</h2>
+                    <p>يمكنك طلب سحب المبالغ المتاحة في حسابك</p>
+                </div>
+                
+                <div class="withdrawal-container">
+                    <div class="available-balance">
+                        <h3>الرصيد المتاح للسحب</h3>
+                        <div class="balance-amount">50,000 دينار</div>
+                        <div class="info-note">
+                            <i class="bx bx-info-circle"></i>
+                            <span>سحب المبالغ يؤدي إلى قطع الفائدة عنها للشهر بالكامل</span>
+                        </div>
+                    </div>
+                    
+                    <form class="withdrawal-form">
+                        <div class="form-group">
+                            <label>المبلغ المراد سحبه</label>
+                            <div class="amount-input">
+                                <input type="number" id="withdrawal-amount" placeholder="أدخل المبلغ" min="1000" max="50000">
+                                <span class="currency">دينار</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>طريقة الاستلام</label>
+                            <select id="withdrawal-method">
+                                <option value="cash">نقدًا في المقر</option>
+                                <option value="bank">تحويل بنكي</option>
+                                <option value="wallet">محفظة إلكترونية</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" id="bank-details" style="display: none;">
+                            <label>تفاصيل الحساب البنكي</label>
+                            <input type="text" id="bank-account" placeholder="رقم الحساب / IBAN">
+                            <input type="text" id="bank-name" placeholder="اسم البنك">
+                        </div>
+                        
+                        <div class="form-group" id="wallet-details" style="display: none;">
+                            <label>المحفظة الإلكترونية</label>
+                            <input type="text" id="wallet-number" placeholder="رقم المحفظة">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>ملاحظات</label>
+                            <textarea id="withdrawal-notes" placeholder="أي ملاحظات إضافية"></textarea>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel">إلغاء</button>
+                            <button type="submit" class="btn-submit">تأكيد طلب السحب</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="withdrawal-history">
+                    <h3>طلبات السحب السابقة</h3>
+                    <div class="history-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>المبلغ</th>
+                                    <th>طريقة الاستلام</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>01/03/2025</td>
+                                    <td>5,000 دينار</td>
+                                    <td>نقدًا</td>
+                                    <td><span class="status completed">تم الاستلام</span></td>
+                                </tr>
+                                <tr>
+                                    <td>15/01/2025</td>
+                                    <td>10,000 دينار</td>
+                                    <td>تحويل بنكي</td>
+                                    <td><span class="status completed">تم الاستلام</span></td>
+                                </tr>
+                                <tr>
+                                    <td>01/12/2024</td>
+                                    <td>3,000 دينار</td>
+                                    <td>محفظة إلكترونية</td>
+                                    <td><span class="status completed">تم الاستلام</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Transactions Page -->
+            <div class="page" id="transactions-page">
+                <div class="page-header">
+                    <h2>سجل التعاملات</h2>
+                </div>
+                
+                <div class="transactions-filters">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-filter="all">الكل</button>
+                        <button class="filter-btn" data-filter="deposit">إيداع</button>
+                        <button class="filter-btn" data-filter="withdraw">سحب</button>
+                        <button class="filter-btn" data-filter="profit">أرباح</button>
+                    </div>
+                    
+                    <div class="search-filter">
+                        <i class="bx bx-search"></i>
+                        <input type="text" placeholder="بحث في التعاملات...">
+                    </div>
+                </div>
+                
+                <div class="transactions-container">
+                    <div class="transaction-item deposit">
+                        <div class="transaction-date">
+                            <div class="day">01</div>
+                            <div class="month">أبريل</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-plus-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>إيداع</h4>
+                            <p>تم إيداع مبلغ في حسابك</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +10,000 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item profit">
+                        <div class="transaction-date">
+                            <div class="day">15</div>
+                            <div class="month">مارس</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-dollar-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>استلام أرباح</h4>
+                            <p>تم إضافة أرباح مارس لحسابك</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +8,750 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item withdraw">
+                        <div class="transaction-date">
+                            <div class="day">01</div>
+                            <div class="month">مارس</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-minus-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>سحب</h4>
+                            <p>تم سحب مبلغ من حسابك</p>
+                        </div>
+                        <div class="transaction-amount negative">
+                            -5,000 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item profit">
+                        <div class="transaction-date">
+                            <div class="day">15</div>
+                            <div class="month">فبراير</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-dollar-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>استلام أرباح</h4>
+                            <p>تم إضافة أرباح فبراير لحسابك</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +8,750 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item deposit">
+                        <div class="transaction-date">
+                            <div class="day">10</div>
+                            <div class="month">فبراير</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-plus-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>إيداع</h4>
+                            <p>تم إيداع مبلغ في حسابك</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +15,000 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item profit">
+                        <div class="transaction-date">
+                            <div class="day">15</div>
+                            <div class="month">يناير</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-dollar-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>استلام أرباح</h4>
+                            <p>تم إضافة أرباح يناير لحسابك</p>
+                        </div>
+                        <div class="transaction-amount positive">
+                            +7,000 دينار
+                        </div>
+                    </div>
+                    
+                    <div class="transaction-item withdraw">
+                        <div class="transaction-date">
+                            <div class="day">05</div>
+                            <div class="month">يناير</div>
+                        </div>
+                        <div class="transaction-icon">
+                            <i class="bx bx-minus-circle"></i>
+                        </div>
+                        <div class="transaction-details">
+                            <h4>سحب</h4>
+                            <p>تم سحب مبلغ من حسابك</p>
+                        </div>
+                        <div class="transaction-amount negative">
+                            -10,000 دينار
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pagination">
+                    <button class="pagination-btn" disabled>
+                        <i class="bx bx-chevron-right"></i>
+                    </button>
+                    <button class="pagination-btn active">1</button>
+                    <button class="pagination-btn">2</button>
+                    <button class="pagination-btn">3</button>
+                    <button class="pagination-btn">
+                        <i class="bx bx-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Profits Page -->
+            <div class="page" id="profits-page">
+                <div class="page-header">
+                    <h2>تفاصيل الأرباح</h2>
+                </div>
+                
+                <div class="profit-summary">
+                    <div class="summary-card">
+                        <div class="summary-title">إجمالي الأرباح الشهرية</div>
+                        <div class="summary-value">8,750 دينار</div>
+                        <div class="summary-change positive">
+                            <i class="bx bx-trending-up"></i>
+                            <span>17.5% شهريًا</span>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">إجمالي الأرباح المتراكمة</div>
+                        <div class="summary-value">26,250 دينار</div>
+                        <div class="summary-percentage">52.5% من رأس المال</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <div class="summary-title">الربح اليومي المتوقع</div>
+                        <div class="summary-value">292 دينار</div>
+                        <div class="summary-info">بناءً على المعدل الحالي</div>
+                    </div>
+                </div>
+                
+                <div class="profit-details">
+                    <div class="section-header">
+                        <h3>جدول الأرباح المستلمة</h3>
+                    </div>
+                    
+                    <div class="profit-table-container">
+                        <table class="profit-table">
+                            <thead>
+                                <tr>
+                                    <th>الشهر</th>
+                                    <th>المبلغ المستثمر</th>
+                                    <th>نسبة الربح</th>
+                                    <th>قيمة الربح</th>
+                                    <th>تاريخ الدفع</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>مارس 2025</td>
+                                    <td>50,000 دينار</td>
+                                    <td>17.5%</td>
+                                    <td>8,750 دينار</td>
+                                    <td>15/03/2025</td>
+                                    <td><span class="status completed">تم الدفع</span></td>
+                                </tr>
+                                <tr>
+                                    <td>فبراير 2025</td>
+                                    <td>50,000 دينار</td>
+                                    <td>17.5%</td>
+                                    <td>8,750 دينار</td>
+                                    <td>15/02/2025</td>
+                                    <td><span class="status completed">تم الدفع</span></td>
+                                </tr>
+                                <tr>
+                                    <td>يناير 2025</td>
+                                    <td>40,000 دينار</td>
+                                    <td>17.5%</td>
+                                    <td>7,000 دينار</td>
+                                    <td>15/01/2025</td>
+                                    <td><span class="status completed">تم الدفع</span></td>
+                                <tr>
+                                    <td>ديسمبر 2024</td>
+                                    <td>40,000 دينار</td>
+                                    <td>17.5%</td>
+                                    <td>7,000 دينار</td>
+                                    <td>15/12/2024</td>
+                                    <td><span class="status completed">تم الدفع</span></td>
+                                </tr>
+                                <tr>
+                                    <td>أبريل 2025</td>
+                                    <td>50,000 دينار</td>
+                                    <td>17.5%</td>
+                                    <td>8,750 دينار</td>
+                                    <td>15/04/2025</td>
+                                    <td><span class="status pending">قيد الانتظار</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="profit-projections">
+                    <div class="section-header">
+                        <h3>توقعات الأرباح المستقبلية</h3>
+                    </div>
+                    
+                    <div class="projection-chart-container">
+                        <div id="projection-chart"></div>
+                    </div>
+                    
+                    <div class="projection-info">
+                        <div class="info-card">
+                            <h4>الأرباح المتوقعة خلال 6 أشهر</h4>
+                            <div class="value">52,500 دينار</div>
+                        </div>
+                        <div class="info-card">
+                            <h4>الأرباح المتوقعة خلال سنة</h4>
+                            <div class="value">105,000 دينار</div>
+                        </div>
+                        <div class="info-card">
+                            <h4>العائد السنوي المتوقع</h4>
+                            <div class="value">210%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Investments Page -->
+            <div class="page" id="investments-page">
+                <div class="page-header">
+                    <h2>استثماراتي</h2>
+                </div>
+                
+                <div class="current-investments">
+                    <div class="section-header">
+                        <h3>الاستثمارات الحالية</h3>
+                        <button class="add-investment-btn">
+                            <i class="bx bx-plus"></i>
+                            <span>استثمار جديد</span>
+                        </button>
+                    </div>
+                    
+                    <div class="investments-container">
+                        <div class="investment-card active">
+                            <div class="investment-header">
+                                <div class="investment-title">خطة استثمار قياسية</div>
+                                <div class="investment-badge">نشط</div>
+                            </div>
+                            
+                            <div class="investment-body">
+                                <div class="investment-amount">50,000 دينار</div>
+                                <div class="investment-info">
+                                    <div class="info-row">
+                                        <span class="info-label">تاريخ البدء</span>
+                                        <span class="info-value">01/12/2024</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">المدة</span>
+                                        <span class="info-value">غير محدودة</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">نسبة العائد</span>
+                                        <span class="info-value">17.5% شهريًا</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">الحالة</span>
+                                        <span class="info-value status-active">نشط</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="investment-progress">
+                                <div class="progress-label">الأرباح المستلمة</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 52.5%;"></div>
+                                </div>
+                                <div class="progress-value">52.5% (26,250 دينار)</div>
+                            </div>
+                            
+                            <div class="investment-actions">
+                                <button class="action-btn">
+                                    <i class="bx bx-plus-circle"></i>
+                                    <span>زيادة</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="bx bx-money-withdraw"></i>
+                                    <span>سحب</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="bx bx-chart"></i>
+                                    <span>تحليل</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="investment-card completed">
+                            <div class="investment-header">
+                                <div class="investment-title">استثمار قصير الأجل</div>
+                                <div class="investment-badge">مكتمل</div>
+                            </div>
+                            
+                            <div class="investment-body">
+                                <div class="investment-amount">25,000 دينار</div>
+                                <div class="investment-info">
+                                    <div class="info-row">
+                                        <span class="info-label">تاريخ البدء</span>
+                                        <span class="info-value">01/06/2024</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">تاريخ الانتهاء</span>
+                                        <span class="info-value">01/09/2024</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">نسبة العائد</span>
+                                        <span class="info-value">15% شهريًا</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="info-label">الحالة</span>
+                                        <span class="info-value status-completed">مكتمل</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="investment-progress">
+                                <div class="progress-label">العائد الإجمالي</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill completed" style="width: 100%;"></div>
+                                </div>
+                                <div class="progress-value">45% (11,250 دينار)</div>
+                            </div>
+                            
+                            <div class="investment-actions">
+                                <button class="action-btn">
+                                    <i class="bx bx-file"></i>
+                                    <span>التقرير</span>
+                                </button>
+                                <button class="action-btn">
+                                    <i class="bx bx-repeat"></i>
+                                    <span>استثمار مجدد</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="investment-plans">
+                    <div class="section-header">
+                        <h3>خطط الاستثمار المتاحة</h3>
+                    </div>
+                    
+                    <div class="plans-container">
+                        <div class="plan-card recommended">
+                            <div class="plan-badge">الأكثر ربحًا</div>
+                            <div class="plan-header">
+                                <h4>خطة استثمار قياسية</h4>
+                                <div class="plan-rate">17.5%</div>
+                                <div class="plan-period">شهريًا</div>
+                            </div>
+                            
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>الحد الأدنى للاستثمار: 10,000 دينار</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>دفع الأرباح: شهريًا</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>السحب: متاح في أي وقت</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>المدة: غير محدودة</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>العائد السنوي: 210%</span>
+                                </div>
+                            </div>
+                            
+                            <button class="plan-btn">اختيار هذه الخطة</button>
+                        </div>
+                        
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h4>خطة استثمار قصيرة الأجل</h4>
+                                <div class="plan-rate">15%</div>
+                                <div class="plan-period">شهريًا</div>
+                            </div>
+                            
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>الحد الأدنى للاستثمار: 5,000 دينار</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>دفع الأرباح: شهريًا</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>السحب: عند انتهاء المدة</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>المدة: 3 أشهر</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>العائد الإجمالي: 45%</span>
+                                </div>
+                            </div>
+                            
+                            <button class="plan-btn outline">اختيار هذه الخطة</button>
+                        </div>
+                        
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h4>خطة استثمار طويلة الأجل</h4>
+                                <div class="plan-rate">20%</div>
+                                <div class="plan-period">شهريًا</div>
+                            </div>
+                            
+                            <div class="plan-features">
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>الحد الأدنى للاستثمار: 25,000 دينار</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>دفع الأرباح: ربع سنوي</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>السحب: عند انتهاء المدة</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>المدة: 12 شهر</span>
+                                </div>
+                                <div class="plan-feature">
+                                    <i class="bx bx-check"></i>
+                                    <span>العائد الإجمالي: 240%</span>
+                                </div>
+                            </div>
+                            
+                            <button class="plan-btn outline">اختيار هذه الخطة</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Notifications Panel -->
+    <div class="notifications-panel">
+        <div class="notifications-header">
+            <h3>الإشعارات</h3>
+            <button class="close-notifications">
+                <i class="bx bx-x"></i>
+            </button>
+        </div>
+        
+        <div class="notifications-list">
+            <div class="notification-item unread">
+                <div class="notification-icon profit">
+                    <i class="bx bx-dollar-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>تم إضافة أرباحك الشهرية</h4>
+                    <p>تهانينا! تم إضافة 8,750 دينار إلى حسابك.</p>
+                    <div class="notification-time">منذ ساعتين</div>
+                </div>
+            </div>
+            
+            <div class="notification-item unread">
+                <div class="notification-icon system">
+                    <i class="bx bx-bell"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>تحديث في سياسة الاستثمار</h4>
+                    <p>تم تحديث سياسة الاستثمار. يرجى الاطلاع على التفاصيل.</p>
+                    <div class="notification-time">منذ 5 ساعات</div>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon transaction">
+                    <i class="bx bx-transfer"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>عملية سحب ناجحة</h4>
+                    <p>تم سحب 5,000 دينار من حسابك بنجاح.</p>
+                    <div class="notification-time">منذ يومين</div>
+                </div>
+            </div>
+            
+            <div class="notification-item">
+                <div class="notification-icon system">
+                    <i class="bx bx-calendar-check"></i>
+                </div>
+                <div class="notification-content">
+                    <h4>موعد استحقاق الأرباح القادم</h4>
+                    <p>ستحصل على أرباحك القادمة في 15 أبريل 2025.</p>
+                    <div class="notification-time">منذ 3 أيام</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="notifications-footer">
+            <button class="mark-all-read">تعيين الكل كمقروءة</button>
+            <a href="#notifications" class="view-all-notifications">عرض كل الإشعارات</a>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    
+    <!-- Add New Investment Modal -->
+    <div class="modal" id="add-investment-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>استثمار جديد</h3>
+                <button class="close-modal">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="new-investment-form">
+                    <div class="form-group">
+                        <label>خطة الاستثمار</label>
+                        <select id="investment-plan" required>
+                            <option value="" disabled selected>اختر خطة الاستثمار</option>
+                            <option value="standard">الخطة القياسية (17.5% شهريًا)</option>
+                            <option value="short">خطة قصيرة الأجل (15% شهريًا)</option>
+                            <option value="long">خطة طويلة الأجل (20% شهريًا)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>مبلغ الاستثمار</label>
+                        <div class="amount-input">
+                            <input type="number" id="investment-amount" placeholder="أدخل المبلغ" min="5000" required>
+                            <span class="currency">دينار</span>
+                        </div>
+                        <div class="min-amount-note">الحد الأدنى للاستثمار: <span id="min-amount">5,000</span> دينار</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>مدة الاستثمار</label>
+                        <select id="investment-duration" required>
+                            <option value="open">غير محدودة</option>
+                            <option value="3">3 أشهر</option>
+                            <option value="6">6 أشهر</option>
+                            <option value="12">12 شهر</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>طريقة الإيداع</label>
+                        <select id="deposit-method" required>
+                            <option value="cash">نقدًا في المقر</option>
+                            <option value="bank">تحويل بنكي</option>
+                            <option value="wallet">محفظة إلكترونية</option>
+                        </select>
+                    </div>
+                    
+                    <div class="investment-summary">
+                        <h4>ملخص الاستثمار</h4>
+                        <div class="summary-row">
+                            <span class="summary-label">المبلغ المستثمر</span>
+                            <span class="summary-value" id="summary-amount">0 دينار</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">نسبة العائد الشهري</span>
+                            <span class="summary-value" id="summary-rate">-</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">العائد الشهري المتوقع</span>
+                            <span class="summary-value" id="summary-monthly">0 دينار</span>
+                        </div>
+                        <div class="summary-row">
+                            <span class="summary-label">إجمالي العائد المتوقع</span>
+                            <span class="summary-value" id="summary-total">0 دينار</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="cancel-btn">إلغاء</button>
+                <button class="submit-btn" id="submit-investment">تأكيد الاستثمار</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Withdrawal Confirmation Modal -->
+    <div class="modal" id="withdrawal-confirmation-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>تأكيد طلب السحب</h3>
+                <button class="close-modal">
+                    <i class="bx bx-x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="confirmation-icon">
+                    <i class="bx bx-money-withdraw"></i>
+                </div>
+                
+                <div class="confirmation-message">
+                    <p>هل أنت متأكد من طلب سحب المبلغ التالي؟</p>
+                    <div class="amount-display">10,000 دينار</div>
+                </div>
+                
+                <div class="warning-message">
+                    <i class="bx bx-error-circle"></i>
+                    <p>تنبيه: سحب المبالغ يؤدي إلى قطع الفائدة عنها للشهر بالكامل. هذا يعني أنك ستفقد الأرباح المتوقعة عن هذا المبلغ لهذا الشهر.</p>
+                </div>
+                
+                <div class="withdrawal-details">
+                    <h4>تفاصيل السحب</h4>
+                    <div class="detail-row">
+                        <span class="detail-label">المبلغ</span>
+                        <span class="detail-value">10,000 دينار</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">طريقة الاستلام</span>
+                        <span class="detail-value">نقدًا في المقر</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">تاريخ الطلب</span>
+                        <span class="detail-value">19 أبريل 2025</span>
+                    </div>
+                    <div class="detail-row negative">
+                        <span class="detail-label">الأرباح المفقودة</span>
+                        <span class="detail-value">1,750 دينار</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="cancel-btn">إلغاء</button>
+                <button class="confirm-btn">تأكيد السحب</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="investor-app.js"></script>
+</body>
+</html>
